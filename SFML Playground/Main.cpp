@@ -7,6 +7,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "Libraries/stb_image.h"
+
 #include "Shader.h"
 
 using namespace std;
@@ -42,8 +45,8 @@ unsigned int CreateShaderProgram(Shader vertexShader, Shader fragmentShader)
 
 void CreateShaders()
 {
-    Shader vertexShader("./Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
-    Shader fragmentShader("./Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
+    Shader vertexShader("./Shaders/Texture_Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
+    Shader fragmentShader("./Shaders/Texture_Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
 
     unsigned int shaderProgram = CreateShaderProgram(fragmentShader, vertexShader);
     int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
@@ -60,14 +63,68 @@ void CreateVertexArray()
     glBindVertexArray(tri2VertexArray);
 
     //pos attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     //color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    //texture attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     glBindVertexArray(tri2VertexArray);
+}
+
+struct Image
+{
+    int width;
+    int height;
+    int channels;
+
+    unsigned char* imageData;
+
+    ~Image()
+    {
+        stbi_image_free(imageData);
+    }
+};
+
+Image LoadAImage(const char* imagePath)
+{
+    Image image;
+
+    image.imageData = stbi_load(imagePath, &image.width, &image.height, &image.channels, 0);
+
+    return image;
+}
+
+void AddTextures()
+{
+    unsigned int textures[2];
+    glGenTextures(2, textures);
+    glBindTextures(GL_TEXTURE_2D, 2, textures);
+
+    Image wallImage = LoadAImage("./Textures/wall.jpg");
+    Image containerImage = LoadAImage("./Textures/container.jpg");
+
+    if (wallImage.imageData != nullptr && containerImage.imageData != nullptr)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wallImage.width, wallImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, wallImage.imageData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        int texture1Loc;
+        //glGetUniformdv()
+        //glUniform1d(texture1Loc, "texture1");
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, containerImage.width, containerImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, containerImage.imageData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        cout << "Failed to generate textures!" << endl;
+        return;
+    }
 }
 
 void Render()
@@ -83,15 +140,23 @@ void InitializeRender()
     CreateShaders();
     
     float vertexs[] = {
-        //positions         //colors
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, //BL
-        0.0f, 0.5f, 0.0f,   0.0f, 1.0f, 0.0f, //TL
-        0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, //BR
+        //positions         //colors          //Texture cordinates
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, //BL
+        0.0f, 0.5f, 0.0f,   0.0f, 1.0f, 0.0f, 0.5f, 1.0f, //T
+        0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f, 0.0f, //BR
+    };
+
+    float textureCordinates[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.5f, 1.0f
     };
 
     unsigned int tri2VertexBuffer = CreateBuffer(vertexs, GL_ARRAY_BUFFER);
 
     CreateVertexArray();
+
+    AddTextures();
 
     Render();
 }
