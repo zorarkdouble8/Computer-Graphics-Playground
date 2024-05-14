@@ -11,6 +11,22 @@
 
 using namespace std;
 
+//Temperary global variables
+sf::Clock clock1;
+int id = 0;
+
+template<typename FLOAT, size_t SZ>
+unsigned int CreateBuffer(FLOAT(&bufferData)[SZ], GLenum&& bufferType)
+{
+    unsigned int bufferId;
+
+    glGenBuffers(1, &bufferId);
+    glBindBuffer(bufferType, bufferId);
+    glBufferData(bufferType, sizeof(bufferData), bufferData, GL_STATIC_DRAW); //add data to the buffer
+
+    return bufferId;
+}
+
 unsigned int CreateShaderProgram(Shader vertexShader, Shader fragmentShader)
 {
     //link shaders together to create a program pipeline
@@ -24,32 +40,121 @@ unsigned int CreateShaderProgram(Shader vertexShader, Shader fragmentShader)
     return shaderProgram;
 }
 
-template<typename FLOAT, size_t SZ>
-unsigned int CreateIndiceBuffer(FLOAT (&indices)[SZ])
+void CreateShaders()
 {
-    //Indice buffer
-    unsigned int indiceBuffer;
-    glGenBuffers(1, &indiceBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiceBuffer);
+    Shader vertexShader("./Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
+    Shader fragmentShader("./Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
 
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); //add the data
+    unsigned int shaderProgram = CreateShaderProgram(fragmentShader, vertexShader);
+    int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
 
-    return indiceBuffer;
+    id = uniformColorLocation;
+
+    glUseProgram(shaderProgram);
 }
 
-template<typename FLOAT, size_t SZ>
-unsigned int CreateVerticeBuffer(FLOAT (&vertices)[SZ])
+void CreateVertexArray()
 {
-    //getting the vertex buffer to store in our vertice
-    unsigned int vertexBuffer;
-    glGenBuffers(1, &vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    unsigned int tri2VertexArray;
+    glGenVertexArrays(1, &tri2VertexArray);
+    glBindVertexArray(tri2VertexArray);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //add the data
+    //pos attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    //color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(tri2VertexArray);
+}
+
+void Render()
+{
+    sf::Time time = clock1.getElapsedTime();
+    glUniform1f(id, time.asSeconds());
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void InitializeRender()
+{
+    CreateShaders();
     
-    return vertexBuffer;
+    float vertexs[] = {
+        //positions         //colors
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, //BL
+        0.0f, 0.5f, 0.0f,   0.0f, 1.0f, 0.0f, //TL
+        0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, //BR
+    };
+
+    unsigned int tri2VertexBuffer = CreateBuffer(vertexs, GL_ARRAY_BUFFER);
+
+    CreateVertexArray();
+
+    Render();
 }
 
+int main()
+{
+    sf::Context context;
+
+    //Initialize glad
+    if (!gladLoadGLLoader((GLADloadproc)(context.getFunction)))
+    {
+        cout << "Could not initialize GLAD!!!!" << endl;
+        return -1;
+    }
+
+    // create the window
+    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
+    window.setVerticalSyncEnabled(true);
+
+    // activate the window
+    window.setActive(true);
+
+    // load resources, initialize the OpenGL states, ...
+    InitializeRender();
+
+    // run the main loop
+    bool running = true;
+    while (running)
+    {
+        // handle events
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                // end the program
+                running = false;
+            }
+            else if (event.type == sf::Event::Resized)
+            {
+                // adjust the viewport when the window is resized
+                glViewport(0, 0, event.size.width, event.size.height);
+            }
+        }
+
+        // clear the buffers
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+        // draw...
+        Render();
+        
+        // end the current frame (internally swaps the front and back buffers)
+        window.display();
+    }
+
+    // release resources...
+
+    return 0;
+}
+
+
+// A useful Example
 //void InitializeRender()
 //{
 //    const char* vertexShaderCode = "#version 330 core\n"
@@ -79,7 +184,7 @@ unsigned int CreateVerticeBuffer(FLOAT (&vertices)[SZ])
 //    };
 //
 //    unsigned int vertexBuffer = CreateVerticeBuffer(vertices);
-//    unsigned int indiceBuffer = CreateIndiceBuffer(indices);
+//    unsigned int indiceBuffer = CreateIndiceBuffer(indices);GL_ELEMENT_ARRAY_BUFFER
 //    
 //    //specifying how OpenGl should connect vertex data to the vertex shader:
 //    unsigned int vertexArray;
@@ -95,141 +200,8 @@ unsigned int CreateVerticeBuffer(FLOAT (&vertices)[SZ])
 //
 //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indiceBuffer);
 //    //glBindVertexArray(GL_VERTEX_ARRAY, vertexArray);
+// 
+// glBindVertexArray(tri1VertexArray);
+// glDrawArrays(GL_TRIANGLES, 0, 3); 
+// 
 //}
-
-sf::Clock clock1;
-int id = 0;
-void InitializeRender2()
-{
-    Shader vertexShader("./Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
-    Shader fragmentShader("./Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
-
-    //create shader
-    unsigned int shaderProgram = CreateShaderProgram(fragmentShader, vertexShader);
-
-    //float tri1[] = {
-    //    0.0f, 0.0f, 0.0f, //BL
-    //    0.0f, -0.5f, 0.0f, //TL
-    //    -0.5f, -0.5f, 0.0f, //TR
-    //};
-
-    float tri2[] = {
-        //positions      //colors
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, //BL
-        0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, //TL
-        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, //BR
-    };
-
-    //unsigned int tri1VertexBuffer = CreateVerticeBuffer(tri1);
-
-    //unsigned int tri1VertexArray;
-    //glGenVertexArrays(1, &tri1VertexArray);
-    //glBindVertexArray(tri1VertexArray);
-   
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    //glEnableVertexAttribArray(0);
-
-    unsigned int tri2VertexBuffer = CreateVerticeBuffer(tri2);
-
-    unsigned int tri2VertexArray;
-    glGenVertexArrays(1, &tri2VertexArray);
-    glBindVertexArray(tri2VertexArray);
-
-    //pos attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    //color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
-    id = uniformColorLocation;
-
-    glUseProgram(shaderProgram);
-    
-
-    glBindVertexArray(tri2VertexArray);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    //glUseProgram(shaderProgram);
-    //glBindVertexArray(tri1VertexArray);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    //use wireframe mode:
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-}
-
-
-void Render()
-{
-    sf::Time time = clock1.getElapsedTime();
-    glUniform1f(id, time.asSeconds());
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    /*glBindVertexArray(tri1VertexArray);
-    glDrawArrays(GL_TRIANGLES, 0, 3);*/
-
-    //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    
-}
-
-int main()
-{
-    sf::Context context;
-
-    //Initialize glad
-    if (!gladLoadGLLoader((GLADloadproc)(context.getFunction)))
-    {
-        cout << "Could not initialize GLAD!!!!" << endl;
-        return -1;
-    }
-
-    // create the window
-    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
-    window.setVerticalSyncEnabled(true);
-
-    // activate the window
-    window.setActive(true);
-
-    // load resources, initialize the OpenGL states, ...
-    InitializeRender2();
-
-    // run the main loop
-    bool running = true;
-    while (running)
-    {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                // end the program
-                running = false;
-            }
-            else if (event.type == sf::Event::Resized)
-            {
-                // adjust the viewport when the window is resized
-                glViewport(0, 0, event.size.width, event.size.height);
-            }
-        }
-
-        // clear the buffers
-        glClearColor(0, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-        // draw...
-        Render();
-        
-
-        // end the current frame (internally swaps the front and back buffers)
-        window.display();
-    }
-
-    // release resources...
-
-    return 0;
-}
