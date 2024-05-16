@@ -43,6 +43,7 @@ unsigned int CreateShaderProgram(Shader vertexShader, Shader fragmentShader)
     return shaderProgram;
 }
 
+int shaderId = 0;
 void CreateShaders()
 {
     Shader vertexShader("./Shaders/Texture_Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
@@ -52,6 +53,7 @@ void CreateShaders()
     int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
 
     id = uniformColorLocation;
+    shaderId = shaderProgram;
 
     glUseProgram(shaderProgram);
 }
@@ -102,23 +104,35 @@ Image LoadAImage(const char* imagePath)
 void AddTextures()
 {
     unsigned int textures[2];
-    glGenTextures(2, textures);
-    glBindTextures(GL_TEXTURE_2D, 2, textures);
+    glGenTextures(2, textures); 
+
+    
+
+    
+
+    cout << textures[0] << " " << textures[1] << endl;
 
     Image wallImage = LoadAImage("./Textures/wall.jpg");
     Image containerImage = LoadAImage("./Textures/container.jpg");
 
     if (wallImage.imageData != nullptr && containerImage.imageData != nullptr)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wallImage.width, wallImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, wallImage.imageData);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        int texture1Loc;
-        //glGetUniformdv()
-        //glUniform1d(texture1Loc, "texture1");
-
+        
+        
+        glActiveTexture(GL_TEXTURE + textures[1]);
+        glBindTexture(textures[1], GL_TEXTURE_2D);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, containerImage.width, containerImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, containerImage.imageData);
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        glActiveTexture(GL_TEXTURE + textures[0]);
+        glBindTexture(textures[0], GL_TEXTURE_2D);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wallImage.width, wallImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, wallImage.imageData);
+        glGenerateMipmap(GL_TEXTURE_2D + textures[0]);
+
+       // glActiveTexture(GL_TEXTURE0 + textures[0]);
+        //working on getting multiple textures to work
+        unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
+        glUniform1i(texture1Loc, GL_TEXTURE + textures[1]);
     }
     else
     {
@@ -131,6 +145,12 @@ void Render()
 {
     sf::Time time = clock1.getElapsedTime();
     glUniform1f(id, time.asSeconds());
+
+   /* glActiveTexture(GL_TEXTURE + 1);
+    glBindTexture(GL_TEXTURE_2D, 1);
+
+    glActiveTexture(GL_TEXTURE + 2);
+    glBindTexture(GL_TEXTURE_2D, 2);*/
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
@@ -171,6 +191,8 @@ int main()
         cout << "Could not initialize GLAD!!!!" << endl;
         return -1;
     }
+
+    cout << "Version of GL: " << glGetString(GL_VERSION) << endl;
 
     // create the window
     sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
