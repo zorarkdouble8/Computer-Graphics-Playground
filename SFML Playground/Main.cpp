@@ -11,10 +11,12 @@
 #include "Libraries/stb_image.h"
 
 #include "Shader.h"
+#include "Graphics_Manager.h"
+#include "System_Manager.h"
 
 using namespace std;
 
-//Temperary global variables
+//Temporary global variables
 sf::Clock clock1;
 int id = 0;
 
@@ -173,6 +175,10 @@ void InitializeRender()
     AddTextures();
 
     Render();
+
+    cout << "TESTING CLASSES" << endl;
+    SystemManager* instance = SystemManager::GetInstance();
+    instance->test();
 }
 
 int main()
