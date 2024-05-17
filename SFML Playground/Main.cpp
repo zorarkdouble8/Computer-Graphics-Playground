@@ -105,11 +105,7 @@ void AddTextures()
 {
     unsigned int textures[2];
     glGenTextures(2, textures); 
-
     
-
-    
-
     cout << textures[0] << " " << textures[1] << endl;
 
     Image wallImage = LoadAImage("./Textures/wall.jpg");
@@ -117,22 +113,15 @@ void AddTextures()
 
     if (wallImage.imageData != nullptr && containerImage.imageData != nullptr)
     {
+        glActiveTexture(GL_TEXTURE0 + textures[0]);
+        glBindTexture(GL_TEXTURE_2D, textures[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wallImage.width, wallImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, wallImage.imageData);
+        glGenerateMipmap(GL_TEXTURE_2D);
         
-        
-        glActiveTexture(GL_TEXTURE + textures[1]);
-        glBindTexture(textures[1], GL_TEXTURE_2D);
+        glActiveTexture(GL_TEXTURE0 + textures[1]);
+        glBindTexture(GL_TEXTURE_2D, textures[1]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, containerImage.width, containerImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, containerImage.imageData);
         glGenerateMipmap(GL_TEXTURE_2D);
-
-        glActiveTexture(GL_TEXTURE + textures[0]);
-        glBindTexture(textures[0], GL_TEXTURE_2D);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, wallImage.width, wallImage.height, 0, GL_RGB, GL_UNSIGNED_BYTE, wallImage.imageData);
-        glGenerateMipmap(GL_TEXTURE_2D + textures[0]);
-
-       // glActiveTexture(GL_TEXTURE0 + textures[0]);
-        //working on getting multiple textures to work
-        unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
-        glUniform1i(texture1Loc, GL_TEXTURE + textures[1]);
     }
     else
     {
@@ -146,11 +135,16 @@ void Render()
     sf::Time time = clock1.getElapsedTime();
     glUniform1f(id, time.asSeconds());
 
-   /* glActiveTexture(GL_TEXTURE + 1);
-    glBindTexture(GL_TEXTURE_2D, 1);
 
-    glActiveTexture(GL_TEXTURE + 2);
-    glBindTexture(GL_TEXTURE_2D, 2);*/
+    unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
+    if ((int)time.asSeconds() % 2 == 0)
+    {
+        glUniform1i(texture1Loc, 1);
+    }
+    else
+    {
+        glUniform1i(texture1Loc, 2);
+    }
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
