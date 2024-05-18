@@ -41,7 +41,7 @@ Shader::Shader(string codeFilePath, GLenum shaderType)
 	}
 	else
 	{
-		cout << "Couldn't open " + codeFilePath + " dhader file!" << endl;
+		cout << "Couldn't open " + codeFilePath + " shader file!" << endl;
 		return;
 	}
 }

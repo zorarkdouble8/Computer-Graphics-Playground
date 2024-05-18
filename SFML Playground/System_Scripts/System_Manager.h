@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+using namespace std;
+
+#include "Event.h"
 
 class SystemManager
 {
@@ -22,10 +26,21 @@ public:
 		}
 	}
 
+	static Event systemScripts;
+	static Event gameScripts;
+
+	void UpdateSystemScripts()
+	{
+		this->systemScripts.Trigger();
+	}
+
+	void  UpdateGameScripts()
+	{
+		this->gameScripts.Trigger();
+	}
+
 private:
 	SystemManager() {};
 
 	static SystemManager* _instance;
 };
-
-SystemManager* SystemManager::_instance = nullptr;

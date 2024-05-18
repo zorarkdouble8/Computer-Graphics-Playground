@@ -8,11 +8,13 @@
 #include <SFML/System.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "Libraries/stb_image.h"
+#include "../Libraries/stb_image.h"
 
 #include "Shader.h"
-#include "Graphics_Manager.h"
+#include "../Graphics_Manager.h"
+#include "Event.h"
 #include "System_Manager.h"
+#include "../Assets/Game_Scripts/TestGameScript.h";
 
 using namespace std;
 
@@ -48,8 +50,8 @@ unsigned int CreateShaderProgram(Shader vertexShader, Shader fragmentShader)
 int shaderId = 0;
 void CreateShaders()
 {
-    Shader vertexShader("./Shaders/Texture_Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
-    Shader fragmentShader("./Shaders/Texture_Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
+    Shader vertexShader("./Assets/Shaders/Texture_Shaders/VertexShader.glsl", GL_VERTEX_SHADER);
+    Shader fragmentShader("./Assets/Shaders/Texture_Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
 
     unsigned int shaderProgram = CreateShaderProgram(fragmentShader, vertexShader);
     int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
@@ -110,8 +112,8 @@ void AddTextures()
     
     cout << textures[0] << " " << textures[1] << endl;
 
-    Image wallImage = LoadAImage("./Textures/wall.jpg");
-    Image containerImage = LoadAImage("./Textures/container.jpg");
+    Image wallImage = LoadAImage("./Assets/Textures/wall.jpg");
+    Image containerImage = LoadAImage("./Assets/Textures/container.jpg");
 
     if (wallImage.imageData != nullptr && containerImage.imageData != nullptr)
     {
@@ -154,7 +156,7 @@ void Render()
 void InitializeRender()
 {
     CreateShaders();
-    
+
     float vertexs[] = {
         //positions         //colors          //Texture cordinates
         -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, //BL
@@ -177,8 +179,12 @@ void InitializeRender()
     Render();
 
     cout << "TESTING CLASSES" << endl;
+    TestGameScript testing;
+
     SystemManager* instance = SystemManager::GetInstance();
-    instance->test();
+    instance->UpdateGameScripts();
+    instance->UpdateGameScripts();
+    
 }
 
 int main()
