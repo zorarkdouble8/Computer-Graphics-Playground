@@ -7,11 +7,11 @@ class TestGameScript: public RuntimeScript
 {
 	void Start()
 	{
-		cout << "Start" << endl;
+		
 	}
 
 	void Update()
 	{
-		cout << "Updating" << endl;
+		
 	}
 };

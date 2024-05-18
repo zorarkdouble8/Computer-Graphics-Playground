@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
-using namespace std;
+#include <iomanip>
+
+#include <glad/glad.h>
 
 #include "Event.h"
 
@@ -26,6 +28,10 @@ public:
 		}
 	}
 
+	//Functions
+	void PrintSystemInfomation();
+
+	//Events
 	static Event systemScripts;
 	static Event gameScripts;
 

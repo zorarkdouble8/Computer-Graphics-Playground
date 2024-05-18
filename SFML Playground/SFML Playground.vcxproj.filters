@@ -48,6 +48,9 @@
     <ClInclude Include="System_Scripts\System_Manager.h">
       <Filter>Header Files\System_Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Playground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System_Scripts\Event.cpp">

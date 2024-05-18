@@ -13,7 +13,7 @@ public:
 	//Constructors
 	RuntimeScript();
 	
-
 private:
+	//TODO: I need to create a way to specify if my script is a system script and then add to the coresponding event in the system manager
 	bool _didInitialize = false;
 };
