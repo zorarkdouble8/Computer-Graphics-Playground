@@ -133,15 +133,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\Game_Scripts\TestGameScript.h" />
+    <ClInclude Include="Graphics_Manager.h" />
+    <ClInclude Include="Playground.h" />
+    <ClInclude Include="System_Scripts\Event.h" />
+    <ClInclude Include="System_Scripts\Runtime_Script.h" />
+    <ClInclude Include="System_Scripts\Shader.h" />
+    <ClInclude Include="System_Scripts\System_Manager.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="glad.c" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Shader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\aShader.GLSL" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Shader.h" />
+    <ClCompile Include="System_Scripts\Event.cpp" />
+    <ClCompile Include="System_Scripts\Main.cpp" />
+    <ClCompile Include="System_Scripts\RuntimeScript.cpp" />
+    <ClCompile Include="System_Scripts\Shader.cpp" />
+    <ClCompile Include="System_Scripts\System_Manager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

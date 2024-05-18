@@ -16,26 +16,60 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{79463567-c0b9-4e56-a765-4a88ded72737}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\System_Scripts">
+      <UniqueIdentifier>{ada67b7d-bd3f-46f4-8928-7f464324599f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game_Scripts">
+      <UniqueIdentifier>{b1ce304d-5cd9-43f8-8b2c-12b16a891939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game_Scripts">
+      <UniqueIdentifier>{2ba00cee-20b3-498e-972a-c3383b8d0b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System_Scripts">
+      <UniqueIdentifier>{58fc49aa-3ce4-4f71-a35f-c1fe2ee9d80b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Graphics_Manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Game_Scripts\TestGameScript.h">
+      <Filter>Source Files\Game_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\Event.h">
+      <Filter>Header Files\System_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\Runtime_Script.h">
+      <Filter>Header Files\System_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\Shader.h">
+      <Filter>Header Files\System_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\System_Manager.h">
+      <Filter>Header Files\System_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Playground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="System_Scripts\Event.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\Main.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\RuntimeScript.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\Shader.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\System_Manager.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\aShader.GLSL">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
