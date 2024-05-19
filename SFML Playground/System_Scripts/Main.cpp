@@ -11,7 +11,6 @@
 #include "../Libraries/stb_image.h"
 
 #include "Shader.h"
-#include "../Graphics_Manager.h"
 #include "Event.h"
 #include "System_Manager.h"
 

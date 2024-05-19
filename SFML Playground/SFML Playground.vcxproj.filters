@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graphics_Manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h">
       <Filter>Source Files\Game_Scripts</Filter>
     </ClInclude>
@@ -51,6 +48,9 @@
     <ClInclude Include="Playground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="System_Scripts\Event_Manager.h">
+      <Filter>Header Files\System_Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System_Scripts\Event.cpp">
@@ -59,7 +59,7 @@
     <ClCompile Include="System_Scripts\Main.cpp">
       <Filter>Source Files\System_Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="System_Scripts\RuntimeScript.cpp">
+    <ClCompile Include="System_Scripts\Runtime_Script.cpp">
       <Filter>Source Files\System_Scripts</Filter>
     </ClCompile>
     <ClCompile Include="System_Scripts\Shader.cpp">
@@ -70,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\Event_Manager.cpp">
+      <Filter>Source Files\System_Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

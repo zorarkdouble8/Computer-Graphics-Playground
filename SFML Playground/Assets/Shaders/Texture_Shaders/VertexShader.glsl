@@ -11,7 +11,7 @@ out vec4 vertexColor;
 
 void main()
 {
-    gl_Position = vec4(aPos.x, aPos.yz, 1.0);
+    gl_Position = vec4(aPos.x * time, aPos.y * time, aPos.z, 1.0);
     vertexColor = vec4(aCol.xyz, 1.0);
     textCord = aTextCord;
 };
