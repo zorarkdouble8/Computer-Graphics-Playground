@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <glad/glad.h>
 #include <SFML/OpenGL.hpp>
@@ -17,15 +18,23 @@
 #include "../Playground.h"
 #include "../Assets/Game_Scripts/TestGameScript.h";
 
+#ifndef DEBUG
+    #define DEBUG 0
+#endif
+
+////MEMORY DETECTION////
+#if DEBUG 1
+    #include <vld.h>
+#endif
+
 using namespace std;
 
-void InitializeScripts()
+void DeleteScripts(vector<Observer*> scripts)
 {
-    //SYSYEM SCRIPTS
-
-    //GAME SCRIPTS
-    TestGameScript* testing = new TestGameScript();
-    Playground* playground = new Playground();
+    for (Observer* observer: scripts)
+    {
+        delete observer;
+    }
 }
 
 int main()
@@ -44,8 +53,7 @@ int main()
     SystemManager* sysManager = SystemManager::GetInstance();
     sysManager->PrintSystemInfomation();
 
-    InitializeScripts();
-    //
+    vector<Observer*> scripts = { new TestGameScript, new Playground };
 
     // create the window
     sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
@@ -87,6 +95,8 @@ int main()
     }
 
     // release resources...
+    DeleteScripts(scripts);
+    sysManager->DeleteInstance();
 
     //TODO destroy scripts and get valgrind to tell me about memory leaks
 

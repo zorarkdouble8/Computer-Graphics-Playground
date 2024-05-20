@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 
+//TODO, let's move the events to the system manager because I can't make vectors static (no dynamic allocation) and let's use maps
+//Basically getInput(inputType, keyCode)
 static class EventManager
 {
 public:
