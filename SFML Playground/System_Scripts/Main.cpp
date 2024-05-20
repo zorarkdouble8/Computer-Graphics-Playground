@@ -1,3 +1,13 @@
+////CONFINGURATIONS////
+//To configure, go to project->properties->preprocessor->preprocessor definitions->set 1 or 0's accordingly
+
+#if TESTMODE 1
+    //don't run this main if tests are enabled
+
+    #if DEBUGMODE 1
+        #include <vld.h>
+    #endif
+
 #pragma once
 
 #include <iostream>
@@ -9,23 +19,14 @@
 #include <SFML/System.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../Libraries/stb_image.h"
+#include "../Libraries/Image_Loader/stb_image.h"
 
 #include "Shader.h"
 #include "Event.h"
 #include "System_Manager.h"
 
 #include "../Playground.h"
-#include "../Assets/Game_Scripts/TestGameScript.h";
-
-#ifndef DEBUG
-    #define DEBUG 0
-#endif
-
-////MEMORY DETECTION////
-#if DEBUG 1
-    #include <vld.h>
-#endif
+#include "../Assets/Game_Scripts/TestGameScript.h"
 
 using namespace std;
 
@@ -102,3 +103,4 @@ int main()
 
     return 0;
 }
+#endif

@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TESTMODE=1;DEBUGMODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -149,6 +149,7 @@
     <ClCompile Include="System_Scripts\Runtime_Script.cpp" />
     <ClCompile Include="System_Scripts\Shader.cpp" />
     <ClCompile Include="System_Scripts\System_Manager.cpp" />
+    <ClCompile Include="System_Scripts\Tests\Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
