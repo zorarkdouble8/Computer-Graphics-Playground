@@ -18,8 +18,8 @@ public:
 	{
 		if (SystemManager::_instance == nullptr)
 		{
-			SystemManager* systemManager = new SystemManager();
-			_instance = systemManager;
+			_instance = new SystemManager();
+			
 			return _instance;
 		}
 		else
@@ -45,8 +45,17 @@ public:
 		this->gameScripts.Trigger();
 	}
 
+	static void DeleteInstance()
+	{
+		delete _instance;
+	}
+
 private:
 	SystemManager() {};
+
+	//causes loop
+	~SystemManager() {};
+	
 
 	static SystemManager* _instance;
 };

@@ -11,8 +11,10 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = texture(texture1, textCord) - 0.5 * vec4(sin(radians(180.0) * vertexColor.r + time), 
-                     cos(radians(180.0) * vertexColor.g + time), 
-                     sin(radians(180.0) * vertexColor.b + time - radians(180.0)), 
-                     1.0);
+    FragColor = mix(texture(texture1, textCord), 
+                    texture(texture2, textCord), 1);
+    // - 0.5 * vec4(sin(radians(180.0) * vertexColor.r + time), 
+    //                  cos(radians(180.0) * vertexColor.g + time), 
+    //                  sin(radians(180.0) * vertexColor.b + time - radians(180.0)), 
+    //                  1.0);
 };

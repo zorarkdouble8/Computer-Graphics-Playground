@@ -1,6 +1,17 @@
+////CONFINGURATIONS////
+//To configure, go to project->properties->preprocessor->preprocessor definitions->set 1 or 0's accordingly
+
+#if TESTMODE 1
+    //don't run this main if tests are enabled
+
+    #if DEBUGMODE 1
+        #include <vld.h>
+    #endif
+
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include <glad/glad.h>
 #include <SFML/OpenGL.hpp>
@@ -8,25 +19,23 @@
 #include <SFML/System.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../Libraries/stb_image.h"
+#include "../Libraries/Image_Loader/stb_image.h"
 
 #include "Shader.h"
-#include "../Graphics_Manager.h"
 #include "Event.h"
 #include "System_Manager.h"
 
 #include "../Playground.h"
-#include "../Assets/Game_Scripts/TestGameScript.h";
+#include "../Assets/Game_Scripts/TestGameScript.h"
 
 using namespace std;
 
-void InitializeScripts()
+void DeleteScripts(vector<Observer*> scripts)
 {
-    //SYSYEM SCRIPTS
-
-    //GAME SCRIPTS
-    TestGameScript* testing = new TestGameScript();
-    Playground* playground = new Playground();
+    for (Observer* observer: scripts)
+    {
+        delete observer;
+    }
 }
 
 int main()
@@ -45,8 +54,7 @@ int main()
     SystemManager* sysManager = SystemManager::GetInstance();
     sysManager->PrintSystemInfomation();
 
-    InitializeScripts();
-    //
+    vector<Observer*> scripts = { new TestGameScript, new Playground };
 
     // create the window
     sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
@@ -88,8 +96,11 @@ int main()
     }
 
     // release resources...
+    DeleteScripts(scripts);
+    sysManager->DeleteInstance();
 
     //TODO destroy scripts and get valgrind to tell me about memory leaks
 
     return 0;
 }
+#endif
