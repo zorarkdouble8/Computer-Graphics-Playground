@@ -36,9 +36,9 @@ public:
 	static Event<> systemScripts;
 	static Event<> gameScripts;
 
-	void UpdateSystemScripts() { this->systemScripts.Trigger(); }
+	void UpdateSystemScripts(); //{ this->systemScripts.Trigger(); }
 
-	void  UpdateGameScripts() { this->gameScripts.Trigger(); }
+	void  UpdateGameScripts(); //{ this->gameScripts.Trigger(); }
 
 	static void DeleteInstance() { delete _instance; }
 

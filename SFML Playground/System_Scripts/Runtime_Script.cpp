@@ -1,6 +1,7 @@
 #pragma once
-#include "Runtime_Script.h"
+
 #include "System_Manager.h"
+#include "Runtime_Script.h"
 
 RuntimeScript::RuntimeScript()
 {
