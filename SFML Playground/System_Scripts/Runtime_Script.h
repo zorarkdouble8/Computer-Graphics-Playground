@@ -1,7 +1,7 @@
 #pragma once
 #include "Event.h"
 
-class RuntimeScript: public Observer 
+class RuntimeScript: public Observer<>
 {
 public:
 	virtual void Start() = 0;

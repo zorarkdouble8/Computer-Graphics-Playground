@@ -10,8 +10,8 @@
 
 //Defining statics (Prevents duplication)
 SystemManager* SystemManager::_instance = nullptr;
-Event SystemManager::systemScripts;
-Event SystemManager::gameScripts;
+Event<> SystemManager::systemScripts;
+Event<> SystemManager::gameScripts;
 
 void SystemManager::PrintSystemInfomation()
 {

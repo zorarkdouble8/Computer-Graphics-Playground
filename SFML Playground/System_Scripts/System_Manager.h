@@ -4,6 +4,7 @@
 #include <iomanip>
 
 #include <glad/glad.h>
+#include<SFML/Graphics.hpp>
 
 #include "Event.h"
 
@@ -32,28 +33,30 @@ public:
 	void PrintSystemInfomation();
 
 	//Events
-	static Event systemScripts;
-	static Event gameScripts;
+	static Event<> systemScripts;
+	static Event<> gameScripts;
 
-	void UpdateSystemScripts()
-	{
-		this->systemScripts.Trigger();
-	}
+	void UpdateSystemScripts() { this->systemScripts.Trigger(); }
 
-	void  UpdateGameScripts()
-	{
-		this->gameScripts.Trigger();
-	}
+	void  UpdateGameScripts() { this->gameScripts.Trigger(); }
 
-	static void DeleteInstance()
+	static void DeleteInstance() { delete _instance; }
+
+	/*static class EventManager
 	{
-		delete _instance;
-	}
+		public:
+			void Refresh_Events(sf::Window& window);
+
+			sf::Event& HasEvent(sf::Event::EventType eventType);
+
+		private:
+			std::vector<sf::Event> events;
+	};*/
 
 private:
 	SystemManager() {};
 
-	//causes loop
+	//causes loop so don't use
 	~SystemManager() {};
 	
 
