@@ -30,9 +30,9 @@
 
 using namespace std;
 
-void DeleteScripts(vector<Observer*> scripts)
+void DeleteScripts(vector<Observer<>*> scripts)
 {
-    for (Observer* observer: scripts)
+    for (Observer<>* observer: scripts)
     {
         delete observer;
     }
@@ -54,7 +54,7 @@ int main()
     SystemManager* sysManager = SystemManager::GetInstance();
     sysManager->PrintSystemInfomation();
 
-    vector<Observer*> scripts = { new TestGameScript, new Playground };
+    vector<Observer<>*> scripts = { new TestGameScript, new Playground };
 
     // create the window
     sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
