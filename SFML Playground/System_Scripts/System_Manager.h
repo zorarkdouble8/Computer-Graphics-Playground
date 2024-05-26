@@ -36,22 +36,10 @@ public:
 	static Event<> systemScripts;
 	static Event<> gameScripts;
 
-	void UpdateSystemScripts(); //{ this->systemScripts.Trigger(); }
-
-	void  UpdateGameScripts(); //{ this->gameScripts.Trigger(); }
+	void UpdateSystemScripts() { this->systemScripts.Trigger(); }
+	void UpdateGameScripts() { this->gameScripts.Trigger(); }
 
 	static void DeleteInstance() { delete _instance; }
-
-	/*static class EventManager
-	{
-		public:
-			void Refresh_Events(sf::Window& window);
-
-			sf::Event& HasEvent(sf::Event::EventType eventType);
-
-		private:
-			std::vector<sf::Event> events;
-	};*/
 
 private:
 	SystemManager() {};

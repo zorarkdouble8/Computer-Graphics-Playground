@@ -19,15 +19,3 @@ void SystemManager::PrintSystemInfomation()
 	std::cout << "Version of GL: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << std::setw(28) << std::setfill('-') << "" << std::endl;
 }
-
-void SystemManager::UpdateGameScripts()
-{
-	this->systemScripts.Trigger();
-}
-
-
-void SystemManager::UpdateSystemScripts()
-{
-	this->gameScripts.Trigger();
-}
-

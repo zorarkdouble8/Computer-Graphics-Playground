@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <glad/glad.h>
+#include <SFML/System.hpp>
 
 #include "./System_Scripts/Runtime_Script.h"
 
@@ -13,6 +14,8 @@ public:
     //Temporary global variables
     sf::Clock clock1;
     int id = 0;
+
+    float textureSize = 1;
 
     void CheckErrors()
     {
@@ -171,8 +174,17 @@ public:
 
     void Render()
     {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            textureSize += 0.01f;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            textureSize -= 0.01f;
+        }
+
         sf::Time time = clock1.getElapsedTime();
-        glUniform1f(id, time.asSeconds());
+        glUniform1f(id, textureSize);
 
 
         unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
