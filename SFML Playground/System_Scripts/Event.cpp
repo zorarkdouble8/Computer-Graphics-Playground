@@ -27,8 +27,8 @@
 //	}
 //}
 
-
-//template<class... types> void Event<types...>::AddObserver(Observer<>* observer)
+//TODO put methods in .cpp file (I'm getting linker errors
+//template<typename... types> typename void Event<types...>::AddObserver(Observer<types...>* observer)
 //{
 //	this->observers.push_back(observer);
 //}

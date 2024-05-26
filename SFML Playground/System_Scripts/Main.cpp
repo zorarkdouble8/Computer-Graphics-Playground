@@ -38,16 +38,8 @@ void DeleteScripts(vector<Observer<>*> scripts)
     }
 }
 
-//void test()
-//{
-//    Event<int> test;
-//    test.Trigger(10);
-//}
-
 int main()
 {
-    //test();
-
     sf::Context context;
 
     //Initialize glad
