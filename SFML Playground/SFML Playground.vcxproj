@@ -150,6 +150,7 @@
     <ClCompile Include="System_Scripts\Shader.cpp" />
     <ClCompile Include="System_Scripts\System_Manager.cpp" />
     <ClCompile Include="System_Scripts\Tests\Test.cpp" />
+    <ClCompile Include="System_Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

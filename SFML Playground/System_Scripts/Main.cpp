@@ -2,7 +2,9 @@
 //To configure, go to project->properties->preprocessor->preprocessor definitions->set 1 or 0's accordingly
 
 #if TESTMODE 1
-    //don't run this main if tests are enabled
+    
+#else
+//don't run this main if tests are enabled
 
     #if DEBUGMODE 1
         #include <vld.h>

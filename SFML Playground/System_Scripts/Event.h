@@ -1,6 +1,7 @@
 #pragma once
 
-#include<vector>
+#include <vector>
+#include <iostream>
 
 template<class... types>
 class Observer
@@ -72,8 +73,31 @@ public:
 		this->functions.push_back(ptr);
 	}
 
-	//TODO
-	//void RemoveFunction((*void)(parameters...));
+	void operator+=(void (*ptr)(parameters...))
+	{
+		this->AddFunction(ptr);
+	}
+
+	
+	void RemoveFunction(void (*ptr)(parameters...))
+	{
+		for (auto x = functions.begin(); x != functions.end();)
+		{
+			if (ptr == *x)
+			{
+				x = functions.erase(x);
+			}
+			else
+			{
+				x++;
+			}
+		}
+	}
+
+	void operator-=(void (*ptr)(parameters...))
+	{
+		this->RemoveFunction(ptr);
+	}
 
 private:
 	std::vector<void (*)(parameters...)> functions;
