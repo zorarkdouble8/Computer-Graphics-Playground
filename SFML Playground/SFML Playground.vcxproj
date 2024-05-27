@@ -102,9 +102,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TESTMODE=1;DEBUGMODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;TESTMODE=0;DEBUGMODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include;$(MSBuildProjectDirectory)\Libraries\glm_(mathematics library)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

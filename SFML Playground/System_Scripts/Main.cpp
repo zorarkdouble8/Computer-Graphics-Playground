@@ -59,7 +59,8 @@ int main()
     vector<Observer<>*> scripts = { new TestGameScript, new Playground };
 
     // create the window
-    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default);
+    sf::ContextSettings windowSettings(24);
+    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, windowSettings);
     window.setVerticalSyncEnabled(true);
 
     // activate the window

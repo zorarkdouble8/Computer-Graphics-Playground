@@ -5,17 +5,24 @@
 #include <glad/glad.h>
 #include <SFML/System.hpp>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+
 #include "./System_Scripts/Runtime_Script.h"
 
 using namespace std;
 class Playground: public RuntimeScript
 {
 public:
-    //Temporary global variables
-    sf::Clock clock1;
-    int id = 0;
+    glm::mat4x4 transform = glm::mat4(1.0f);
+    glm::mat4x4 worldTrans = glm::mat4(1.0f);
+    glm::mat4x4 viewTrans = glm::mat4(1.0f);
+    glm::mat4x4 projTrans = glm::mat4(1.0f);
 
-    float textureSize = 1;
 
     void CheckErrors()
     {
@@ -70,9 +77,7 @@ public:
         Shader fragmentShader("./Assets/Shaders/Texture_Shaders/FragmentShader.glsl", GL_FRAGMENT_SHADER);
 
         unsigned int shaderProgram = CreateShaderProgram(fragmentShader, vertexShader);
-        int uniformColorLocation = glGetUniformLocation(shaderProgram, "time");
 
-        id = uniformColorLocation;
         shaderId = shaderProgram;
 
         glUseProgram(shaderProgram);
@@ -176,46 +181,86 @@ public:
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            textureSize += 0.01f;
+            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] + 0.1f, glm::vec3(1, 0, 0));
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            textureSize -= 0.01f;
+            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(1, 0, 0));
         }
 
-        sf::Time time = clock1.getElapsedTime();
-        glUniform1f(id, textureSize);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] + 0.1f, glm::vec3(0, 1, 0));
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(0, 1, 0));
+        }
 
+        unsigned int transformMLoc = glGetUniformLocation(shaderId, "transformationMatrix");
+        glUniformMatrix4fv(transformMLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+        unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
+        glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
+
+        unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
+        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(viewTrans));
+
+        unsigned int projectTransLoc = glGetUniformLocation(shaderId, "projectionTransform");
+        glUniformMatrix4fv(projectTransLoc, 1, GL_FALSE, glm::value_ptr(projTrans));
 
         unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
+        glUniform1i(texture1Loc, 1);
 
-        if ((int)time.asSeconds() % 2 == 0)
-        {
-            glUniform1i(texture1Loc, 1);
-        }
-        else
-        {
-            glUniform1i(texture1Loc, 2);
-        }
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     }
 
     void InitializeRender()
     {
+        glEnable(GL_DEPTH_TEST);
+
         CreateShaders();
 
         float vertexs[] = {
-            //positions         //colors          //Texture cordinates
-            -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, //BL
-            0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, //BR
-            -0.5f, 0.5f, 0.0f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, //TL
-            0.5f, 0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f, 1.0f, //TR
+            //positions          //colors          //Texture cordinates
+            //Top
+            -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, //BL
+            0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, //BR
+            -0.5f, 0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, //TL
+            0.5f, 0.5f, -0.5f,   1.0f, 1.0f, 1.0f, 1.0f, 1.0f, //TR
+
+            //Bottom (starting at 4)
+            -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, //BL
+            0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 0.0f, //BR
+            -0.5f, 0.5f, 0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, //TL
+            0.5f, 0.5f, 0.5f,   1.0f, 1.0f, 1.0f, 1.0f, 1.0f, //TR
         };
 
         unsigned int indices[] = {
+            //top plane
             0, 1, 2,
-            3, 2, 1
+            3, 2, 1,
+
+            //bottom plane
+            4, 5, 6,
+            7, 6, 5,
+
+            //z plane (it's normal to)
+            4, 1, 5,
+            4, 1, 0,
+
+            //-z plane
+            6, 7, 3,
+            6, 2, 3,
+
+            //x plane
+            5, 3, 1,
+            5, 3, 7,
+
+            //-x plane
+            4, 2, 0,
+            4, 2, 6,
+
         };
 
         unsigned int tri2VertexBuffer = CreateBuffer(vertexs, GL_ARRAY_BUFFER);
@@ -231,6 +276,10 @@ public:
 
 	void Start()
 	{
+        worldTrans = glm::rotate(worldTrans, glm::radians(-55.0f), glm::vec3(1, 0, 0));
+        viewTrans = glm::translate(viewTrans, glm::vec3(0, 0, -3.0f));
+        projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
         InitializeRender();
 	}
 
