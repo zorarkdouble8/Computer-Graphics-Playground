@@ -1,0 +1,748 @@
+
+Dump of file Runtime_Script.obj
+
+File Type: COFF OBJECT
+
+??$_Getvals@_W@?$time_get@DV?$istreambuf_iterator@DU?$char_traits@D@std@@@std@@@std@@IEAAX_WAEBV_Locinfo@1@@Z (protected: void __cdecl std::time_get<char,class std::istreambuf_iterator<char,struct std::char_traits<char> > >::_Getvals<wchar_t>(wchar_t,class std::_Locinfo const &)):
+  0000000000000000: 4C 89 44 24 18     mov         qword ptr [rsp+18h],r8
+  0000000000000005: 66 89 54 24 10     mov         word ptr [rsp+10h],dx
+  000000000000000A: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000F: 55                 push        rbp
+  0000000000000010: 56                 push        rsi
+  0000000000000011: 57                 push        rdi
+  0000000000000012: 48 81 EC 30 01 00  sub         rsp,130h
+                    00
+  0000000000000019: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  000000000000001E: 48 8D 0D 00 00 00  lea         rcx,[__ECD77665_xloctime]
+                    00
+  0000000000000025: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000002A: 90                 nop
+  000000000000002B: 48 8D 95 C8 00 00  lea         rdx,[rbp+0C8h]
+                    00
+  0000000000000032: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000039: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getcvt@_Locinfo@std@@QEBA?AU_Cvtvec@@XZ]
+  000000000000003F: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000046: 48 8D 79 2C        lea         rdi,[rcx+2Ch]
+  000000000000004A: 48 8B F0           mov         rsi,rax
+  000000000000004D: B9 2C 00 00 00     mov         ecx,2Ch
+  0000000000000052: F3 A4              rep movs    byte ptr [rdi],byte ptr [rsi]
+  0000000000000054: 33 C0              xor         eax,eax
+  0000000000000056: 83 F8 01           cmp         eax,1
+  0000000000000059: 74 5C              je          00000000000000B7
+  000000000000005B: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000062: FF 15 00 00 00 00  call        qword ptr [__imp_?_W_Getdays@_Locinfo@std@@QEBAPEBGXZ]
+  0000000000000068: 48 8B C8           mov         rcx,rax
+  000000000000006B: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  0000000000000070: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000077: 48 89 41 10        mov         qword ptr [rcx+10h],rax
+  000000000000007B: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000082: FF 15 00 00 00 00  call        qword ptr [__imp_?_W_Getmonths@_Locinfo@std@@QEBAPEBGXZ]
+  0000000000000088: 48 8B C8           mov         rcx,rax
+  000000000000008B: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  0000000000000090: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000097: 48 89 41 18        mov         qword ptr [rcx+18h],rax
+  000000000000009B: 48 8D 0D 00 00 00  lea         rcx,[??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@]
+                    00
+  00000000000000A2: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  00000000000000A7: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  00000000000000AE: 48 89 41 20        mov         qword ptr [rcx+20h],rax
+  00000000000000B2: E9 A3 00 00 00     jmp         000000000000015A
+  00000000000000B7: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  00000000000000BE: 48 83 C0 2C        add         rax,2Ch
+  00000000000000C2: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  00000000000000C9: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  00000000000000D0: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getdays@_Locinfo@std@@QEBAPEBDXZ]
+  00000000000000D6: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  00000000000000DD: 4C 8B C1           mov         r8,rcx
+  00000000000000E0: 33 D2              xor         edx,edx
+  00000000000000E2: 48 8B C8           mov         rcx,rax
+  00000000000000E5: E8 00 00 00 00     call        ??$_Maklocstr@D@std@@YAPEADPEBDPEADAEBU_Cvtvec@@@Z
+  00000000000000EA: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  00000000000000F1: 48 89 41 10        mov         qword ptr [rcx+10h],rax
+  00000000000000F5: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  00000000000000FC: 48 83 C0 2C        add         rax,2Ch
+  0000000000000100: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  0000000000000107: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  000000000000010E: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getmonths@_Locinfo@std@@QEBAPEBDXZ]
+  0000000000000114: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  000000000000011B: 4C 8B C1           mov         r8,rcx
+  000000000000011E: 33 D2              xor         edx,edx
+  0000000000000120: 48 8B C8           mov         rcx,rax
+  0000000000000123: E8 00 00 00 00     call        ??$_Maklocstr@D@std@@YAPEADPEBDPEADAEBU_Cvtvec@@@Z
+  0000000000000128: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  000000000000012F: 48 89 41 18        mov         qword ptr [rcx+18h],rax
+  0000000000000133: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  000000000000013A: 48 83 C0 2C        add         rax,2Ch
+  000000000000013E: 4C 8B C0           mov         r8,rax
+  0000000000000141: 33 D2              xor         edx,edx
+  0000000000000143: 48 8D 0D 00 00 00  lea         rcx,[??_C@_0N@LPFKKEBD@?3AM?3am?3PM?3pm@]
+                    00
+  000000000000014A: E8 00 00 00 00     call        ??$_Maklocstr@D@std@@YAPEADPEBDPEADAEBU_Cvtvec@@@Z
+  000000000000014F: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000156: 48 89 41 20        mov         qword ptr [rcx+20h],rax
+  000000000000015A: 48 8D A5 10 01 00  lea         rsp,[rbp+110h]
+                    00
+  0000000000000161: 5F                 pop         rdi
+  0000000000000162: 5E                 pop         rsi
+  0000000000000163: 5D                 pop         rbp
+  0000000000000164: C3                 ret
+
+??$_Getvals@_W@?$time_get@_WV?$istreambuf_iterator@_WU?$char_traits@_W@std@@@std@@@std@@IEAAX_WAEBV_Locinfo@1@@Z (protected: void __cdecl std::time_get<wchar_t,class std::istreambuf_iterator<wchar_t,struct std::char_traits<wchar_t> > >::_Getvals<wchar_t>(wchar_t,class std::_Locinfo const &)):
+  0000000000000000: 4C 89 44 24 18     mov         qword ptr [rsp+18h],r8
+  0000000000000005: 66 89 54 24 10     mov         word ptr [rsp+10h],dx
+  000000000000000A: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000F: 55                 push        rbp
+  0000000000000010: 56                 push        rsi
+  0000000000000011: 57                 push        rdi
+  0000000000000012: 48 81 EC 30 01 00  sub         rsp,130h
+                    00
+  0000000000000019: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  000000000000001E: 48 8D 0D 00 00 00  lea         rcx,[__ECD77665_xloctime]
+                    00
+  0000000000000025: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000002A: 90                 nop
+  000000000000002B: 48 8D 95 C8 00 00  lea         rdx,[rbp+0C8h]
+                    00
+  0000000000000032: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000039: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getcvt@_Locinfo@std@@QEBA?AU_Cvtvec@@XZ]
+  000000000000003F: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000046: 48 8D 79 2C        lea         rdi,[rcx+2Ch]
+  000000000000004A: 48 8B F0           mov         rsi,rax
+  000000000000004D: B9 2C 00 00 00     mov         ecx,2Ch
+  0000000000000052: F3 A4              rep movs    byte ptr [rdi],byte ptr [rsi]
+  0000000000000054: 33 C0              xor         eax,eax
+  0000000000000056: 83 F8 01           cmp         eax,1
+  0000000000000059: 74 5C              je          00000000000000B7
+  000000000000005B: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000062: FF 15 00 00 00 00  call        qword ptr [__imp_?_W_Getdays@_Locinfo@std@@QEBAPEBGXZ]
+  0000000000000068: 48 8B C8           mov         rcx,rax
+  000000000000006B: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  0000000000000070: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000077: 48 89 41 10        mov         qword ptr [rcx+10h],rax
+  000000000000007B: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000082: FF 15 00 00 00 00  call        qword ptr [__imp_?_W_Getmonths@_Locinfo@std@@QEBAPEBGXZ]
+  0000000000000088: 48 8B C8           mov         rcx,rax
+  000000000000008B: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  0000000000000090: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000097: 48 89 41 18        mov         qword ptr [rcx+18h],rax
+  000000000000009B: 48 8D 0D 00 00 00  lea         rcx,[??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@]
+                    00
+  00000000000000A2: E8 00 00 00 00     call        ?_Maklocwcs@std@@YAPEA_WPEB_W@Z
+  00000000000000A7: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  00000000000000AE: 48 89 41 20        mov         qword ptr [rcx+20h],rax
+  00000000000000B2: E9 A3 00 00 00     jmp         000000000000015A
+  00000000000000B7: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  00000000000000BE: 48 83 C0 2C        add         rax,2Ch
+  00000000000000C2: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  00000000000000C9: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  00000000000000D0: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getdays@_Locinfo@std@@QEBAPEBDXZ]
+  00000000000000D6: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  00000000000000DD: 4C 8B C1           mov         r8,rcx
+  00000000000000E0: 33 D2              xor         edx,edx
+  00000000000000E2: 48 8B C8           mov         rcx,rax
+  00000000000000E5: E8 00 00 00 00     call        ??$_Maklocstr@_W@std@@YAPEA_WPEBDPEA_WAEBU_Cvtvec@@@Z
+  00000000000000EA: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  00000000000000F1: 48 89 41 10        mov         qword ptr [rcx+10h],rax
+  00000000000000F5: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  00000000000000FC: 48 83 C0 2C        add         rax,2Ch
+  0000000000000100: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  0000000000000107: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  000000000000010E: FF 15 00 00 00 00  call        qword ptr [__imp_?_Getmonths@_Locinfo@std@@QEBAPEBDXZ]
+  0000000000000114: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  000000000000011B: 4C 8B C1           mov         r8,rcx
+  000000000000011E: 33 D2              xor         edx,edx
+  0000000000000120: 48 8B C8           mov         rcx,rax
+  0000000000000123: E8 00 00 00 00     call        ??$_Maklocstr@_W@std@@YAPEA_WPEBDPEA_WAEBU_Cvtvec@@@Z
+  0000000000000128: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  000000000000012F: 48 89 41 18        mov         qword ptr [rcx+18h],rax
+  0000000000000133: 48 8B 85 30 01 00  mov         rax,qword ptr [rbp+130h]
+                    00
+  000000000000013A: 48 83 C0 2C        add         rax,2Ch
+  000000000000013E: 4C 8B C0           mov         r8,rax
+  0000000000000141: 33 D2              xor         edx,edx
+  0000000000000143: 48 8D 0D 00 00 00  lea         rcx,[??_C@_0N@LPFKKEBD@?3AM?3am?3PM?3pm@]
+                    00
+  000000000000014A: E8 00 00 00 00     call        ??$_Maklocstr@_W@std@@YAPEA_WPEBDPEA_WAEBU_Cvtvec@@@Z
+  000000000000014F: 48 8B 8D 30 01 00  mov         rcx,qword ptr [rbp+130h]
+                    00
+  0000000000000156: 48 89 41 20        mov         qword ptr [rcx+20h],rax
+  000000000000015A: 48 8D A5 10 01 00  lea         rsp,[rbp+110h]
+                    00
+  0000000000000161: 5F                 pop         rdi
+  0000000000000162: 5E                 pop         rsi
+  0000000000000163: 5D                 pop         rbp
+  0000000000000164: C3                 ret
+
+??$_Maklocstr@D@std@@YAPEADPEBDPEADAEBU_Cvtvec@@@Z (char * __cdecl std::_Maklocstr<char>(char const *,char *,struct _Cvtvec const &)):
+  0000000000000000: 4C 89 44 24 18     mov         qword ptr [rsp+18h],r8
+  0000000000000005: 48 89 54 24 10     mov         qword ptr [rsp+10h],rdx
+  000000000000000A: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000F: 55                 push        rbp
+  0000000000000010: 57                 push        rdi
+  0000000000000011: 48 81 EC 58 01 00  sub         rsp,158h
+                    00
+  0000000000000018: 48 8D 6C 24 30     lea         rbp,[rsp+30h]
+  000000000000001D: 48 8D 0D 00 00 00  lea         rcx,[__DDC55E48_xlocale]
+                    00
+  0000000000000024: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  0000000000000029: 90                 nop
+  000000000000002A: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  0000000000000031: E8 00 00 00 00     call        strlen
+  0000000000000036: 48 FF C0           inc         rax
+  0000000000000039: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  000000000000003D: C7 44 24 20 03 02  mov         dword ptr [rsp+20h],203h
+                    00 00
+  0000000000000045: 4C 8D 0D 00 00 00  lea         r9,[??_C@_0GC@MLKAFPLI@C?3?2Program?5Files?2Microsoft?5Visu@]
+                    00
+  000000000000004C: 41 B8 02 00 00 00  mov         r8d,2
+  0000000000000052: BA 01 00 00 00     mov         edx,1
+  0000000000000057: 48 8B 4D 08        mov         rcx,qword ptr [rbp+8]
+  000000000000005B: FF 15 00 00 00 00  call        qword ptr [__imp__calloc_dbg]
+  0000000000000061: 48 89 45 28        mov         qword ptr [rbp+28h],rax
+  0000000000000065: 48 83 7D 28 00     cmp         qword ptr [rbp+28h],0
+  000000000000006A: 75 06              jne         0000000000000072
+  000000000000006C: E8 00 00 00 00     call        ?_Xbad_alloc@std@@YAXXZ
+  0000000000000071: 90                 nop
+  0000000000000072: 48 8B 45 28        mov         rax,qword ptr [rbp+28h]
+  0000000000000076: 48 89 45 48        mov         qword ptr [rbp+48h],rax
+  000000000000007A: EB 27              jmp         00000000000000A3
+  000000000000007C: 48 8B 45 08        mov         rax,qword ptr [rbp+8]
+  0000000000000080: 48 FF C8           dec         rax
+  0000000000000083: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  0000000000000087: 48 8B 45 48        mov         rax,qword ptr [rbp+48h]
+  000000000000008B: 48 FF C0           inc         rax
+  000000000000008E: 48 89 45 48        mov         qword ptr [rbp+48h],rax
+  0000000000000092: 48 8B 85 40 01 00  mov         rax,qword ptr [rbp+140h]
+                    00
+  0000000000000099: 48 FF C0           inc         rax
+  000000000000009C: 48 89 85 40 01 00  mov         qword ptr [rbp+140h],rax
+                    00
+  00000000000000A3: 48 83 7D 08 00     cmp         qword ptr [rbp+8],0
+  00000000000000A8: 76 12              jbe         00000000000000BC
+  00000000000000AA: 48 8B 45 48        mov         rax,qword ptr [rbp+48h]
+  00000000000000AE: 48 8B 8D 40 01 00  mov         rcx,qword ptr [rbp+140h]
+                    00
+  00000000000000B5: 0F B6 09           movzx       ecx,byte ptr [rcx]
+  00000000000000B8: 88 08              mov         byte ptr [rax],cl
+  00000000000000BA: EB C0              jmp         000000000000007C
+  00000000000000BC: 48 8B 45 28        mov         rax,qword ptr [rbp+28h]
+  00000000000000C0: 48 8D A5 28 01 00  lea         rsp,[rbp+128h]
+                    00
+  00000000000000C7: 5F                 pop         rdi
+  00000000000000C8: 5D                 pop         rbp
+  00000000000000C9: C3                 ret
+
+??$_Maklocstr@_W@std@@YAPEA_WPEBDPEA_WAEBU_Cvtvec@@@Z (wchar_t * __cdecl std::_Maklocstr<wchar_t>(char const *,wchar_t *,struct _Cvtvec const &)):
+  0000000000000000: 4C 89 44 24 18     mov         qword ptr [rsp+18h],r8
+  0000000000000005: 48 89 54 24 10     mov         qword ptr [rsp+10h],rdx
+  000000000000000A: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000F: 55                 push        rbp
+  0000000000000010: 57                 push        rdi
+  0000000000000011: 48 81 EC 38 02 00  sub         rsp,238h
+                    00
+  0000000000000018: 48 8D 6C 24 30     lea         rbp,[rsp+30h]
+  000000000000001D: 48 8D 7C 24 30     lea         rdi,[rsp+30h]
+  0000000000000022: B9 52 00 00 00     mov         ecx,52h
+  0000000000000027: B8 CC CC CC CC     mov         eax,0CCCCCCCCh
+  000000000000002C: F3 AB              rep stos    dword ptr [rdi]
+  000000000000002E: 48 8B 8C 24 58 02  mov         rcx,qword ptr [rsp+258h]
+                    00 00
+  0000000000000036: 48 8B 05 00 00 00  mov         rax,qword ptr [__security_cookie]
+                    00
+  000000000000003D: 48 33 C5           xor         rax,rbp
+  0000000000000040: 48 89 85 F8 01 00  mov         qword ptr [rbp+1F8h],rax
+                    00
+  0000000000000047: 48 8D 0D 00 00 00  lea         rcx,[__DDC55E48_xlocale]
+                    00
+  000000000000004E: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  0000000000000053: 90                 nop
+  0000000000000054: 48 8D 85 C8 00 00  lea         rax,[rbp+0C8h]
+                    00
+  000000000000005B: 48 8B F8           mov         rdi,rax
+  000000000000005E: 33 C0              xor         eax,eax
+  0000000000000060: B9 08 00 00 00     mov         ecx,8
+  0000000000000065: F3 AA              rep stos    byte ptr [rdi]
+  0000000000000067: 48 8B 8D 20 02 00  mov         rcx,qword ptr [rbp+220h]
+                    00
+  000000000000006E: E8 00 00 00 00     call        strlen
+  0000000000000073: 48 FF C0           inc         rax
+  0000000000000076: 48 89 45 28        mov         qword ptr [rbp+28h],rax
+  000000000000007A: 48 8B 45 28        mov         rax,qword ptr [rbp+28h]
+  000000000000007E: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  0000000000000082: 48 C7 45 48 00 00  mov         qword ptr [rbp+48h],0
+                    00 00
+  000000000000008A: 48 8B 85 20 02 00  mov         rax,qword ptr [rbp+220h]
+                    00
+  0000000000000091: 48 89 45 68        mov         qword ptr [rbp+68h],rax
+  0000000000000095: EB 35              jmp         00000000000000CC
+  0000000000000097: 48 63 85 84 00 00  movsxd      rax,dword ptr [rbp+84h]
+                    00
+  000000000000009E: 48 8B 4D 08        mov         rcx,qword ptr [rbp+8]
+  00000000000000A2: 48 2B C8           sub         rcx,rax
+  00000000000000A5: 48 8B C1           mov         rax,rcx
+  00000000000000A8: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  00000000000000AC: 48 63 85 84 00 00  movsxd      rax,dword ptr [rbp+84h]
+                    00
+  00000000000000B3: 48 8B 4D 68        mov         rcx,qword ptr [rbp+68h]
+  00000000000000B7: 48 03 C8           add         rcx,rax
+  00000000000000BA: 48 8B C1           mov         rax,rcx
+  00000000000000BD: 48 89 45 68        mov         qword ptr [rbp+68h],rax
+  00000000000000C1: 48 8B 45 48        mov         rax,qword ptr [rbp+48h]
+  00000000000000C5: 48 FF C0           inc         rax
+  00000000000000C8: 48 89 45 48        mov         qword ptr [rbp+48h],rax
+  00000000000000CC: 48 83 7D 08 00     cmp         qword ptr [rbp+8],0
+  00000000000000D1: 76 3A              jbe         000000000000010D
+  00000000000000D3: 48 8B 85 30 02 00  mov         rax,qword ptr [rbp+230h]
+                    00
+  00000000000000DA: 48 89 44 24 20     mov         qword ptr [rsp+20h],rax
+  00000000000000DF: 4C 8D 8D C8 00 00  lea         r9,[rbp+0C8h]
+                    00
+  00000000000000E6: 4C 8B 45 08        mov         r8,qword ptr [rbp+8]
+  00000000000000EA: 48 8B 55 68        mov         rdx,qword ptr [rbp+68h]
+  00000000000000EE: 48 8D 8D A4 00 00  lea         rcx,[rbp+0A4h]
+                    00
+  00000000000000F5: E8 00 00 00 00     call        _Mbrtowc
+  00000000000000FA: 89 85 84 00 00 00  mov         dword ptr [rbp+84h],eax
+  0000000000000100: 83 BD 84 00 00 00  cmp         dword ptr [rbp+84h],0
+                    00
+  0000000000000107: 7F 02              jg          000000000000010B
+  0000000000000109: EB 02              jmp         000000000000010D
+  000000000000010B: EB 8A              jmp         0000000000000097
+  000000000000010D: 48 8B 45 48        mov         rax,qword ptr [rbp+48h]
+  0000000000000111: 48 FF C0           inc         rax
+  0000000000000114: 48 89 45 48        mov         qword ptr [rbp+48h],rax
+  0000000000000118: C7 44 24 20 24 02  mov         dword ptr [rsp+20h],224h
+                    00 00
+  0000000000000120: 4C 8D 0D 00 00 00  lea         r9,[??_C@_0GC@MLKAFPLI@C?3?2Program?5Files?2Microsoft?5Visu@]
+                    00
+  0000000000000127: 41 B8 02 00 00 00  mov         r8d,2
+  000000000000012D: BA 02 00 00 00     mov         edx,2
+  0000000000000132: 48 8B 4D 48        mov         rcx,qword ptr [rbp+48h]
+  0000000000000136: FF 15 00 00 00 00  call        qword ptr [__imp__calloc_dbg]
+  000000000000013C: 48 89 85 E8 00 00  mov         qword ptr [rbp+0E8h],rax
+                    00
+  0000000000000143: 48 83 BD E8 00 00  cmp         qword ptr [rbp+0E8h],0
+                    00 00
+  000000000000014B: 75 06              jne         0000000000000153
+  000000000000014D: E8 00 00 00 00     call        ?_Xbad_alloc@std@@YAXXZ
+  0000000000000152: 90                 nop
+  0000000000000153: 48 8B 85 E8 00 00  mov         rax,qword ptr [rbp+0E8h]
+                    00
+  000000000000015A: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  0000000000000161: 48 8D 85 28 01 00  lea         rax,[rbp+128h]
+                    00
+  0000000000000168: 48 8B F8           mov         rdi,rax
+  000000000000016B: 33 C0              xor         eax,eax
+  000000000000016D: B9 08 00 00 00     mov         ecx,8
+  0000000000000172: F3 AA              rep stos    byte ptr [rdi]
+  0000000000000174: EB 4D              jmp         00000000000001C3
+  0000000000000176: 48 63 85 84 00 00  movsxd      rax,dword ptr [rbp+84h]
+                    00
+  000000000000017D: 48 8B 4D 08        mov         rcx,qword ptr [rbp+8]
+  0000000000000181: 48 2B C8           sub         rcx,rax
+  0000000000000184: 48 8B C1           mov         rax,rcx
+  0000000000000187: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  000000000000018B: 48 63 85 84 00 00  movsxd      rax,dword ptr [rbp+84h]
+                    00
+  0000000000000192: 48 8B 8D 20 02 00  mov         rcx,qword ptr [rbp+220h]
+                    00
+  0000000000000199: 48 03 C8           add         rcx,rax
+  000000000000019C: 48 8B C1           mov         rax,rcx
+  000000000000019F: 48 89 85 20 02 00  mov         qword ptr [rbp+220h],rax
+                    00
+  00000000000001A6: 48 8B 45 48        mov         rax,qword ptr [rbp+48h]
+  00000000000001AA: 48 FF C8           dec         rax
+  00000000000001AD: 48 89 45 48        mov         qword ptr [rbp+48h],rax
+  00000000000001B1: 48 8B 85 08 01 00  mov         rax,qword ptr [rbp+108h]
+                    00
+  00000000000001B8: 48 83 C0 02        add         rax,2
+  00000000000001BC: 48 89 85 08 01 00  mov         qword ptr [rbp+108h],rax
+                    00
+  00000000000001C3: 48 83 7D 48 00     cmp         qword ptr [rbp+48h],0
+  00000000000001C8: 76 40              jbe         000000000000020A
+  00000000000001CA: 48 8B 85 30 02 00  mov         rax,qword ptr [rbp+230h]
+                    00
+  00000000000001D1: 48 89 44 24 20     mov         qword ptr [rsp+20h],rax
+  00000000000001D6: 4C 8D 8D 28 01 00  lea         r9,[rbp+128h]
+                    00
+  00000000000001DD: 4C 8B 45 28        mov         r8,qword ptr [rbp+28h]
+  00000000000001E1: 48 8B 95 20 02 00  mov         rdx,qword ptr [rbp+220h]
+                    00
+  00000000000001E8: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  00000000000001EF: E8 00 00 00 00     call        _Mbrtowc
+  00000000000001F4: 89 85 84 00 00 00  mov         dword ptr [rbp+84h],eax
+  00000000000001FA: 83 BD 84 00 00 00  cmp         dword ptr [rbp+84h],0
+                    00
+  0000000000000201: 7F 02              jg          0000000000000205
+  0000000000000203: EB 05              jmp         000000000000020A
+  0000000000000205: E9 6C FF FF FF     jmp         0000000000000176
+  000000000000020A: 33 C0              xor         eax,eax
+  000000000000020C: 48 8B 8D 08 01 00  mov         rcx,qword ptr [rbp+108h]
+                    00
+  0000000000000213: 66 89 01           mov         word ptr [rcx],ax
+  0000000000000216: 48 8B 85 E8 00 00  mov         rax,qword ptr [rbp+0E8h]
+                    00
+  000000000000021D: 48 8B F8           mov         rdi,rax
+  0000000000000220: 48 8D 4D D0        lea         rcx,[rbp-30h]
+  0000000000000224: 48 8D 15 00 00 00  lea         rdx,[??$_Maklocstr@_W@std@@YAPEA_WPEBDPEA_WAEBU_Cvtvec@@@Z$rtcFrameData]
+                    00
+  000000000000022B: E8 00 00 00 00     call        _RTC_CheckStackVars
+  0000000000000230: 48 8B C7           mov         rax,rdi
+  0000000000000233: 48 8B 8D F8 01 00  mov         rcx,qword ptr [rbp+1F8h]
+                    00
+  000000000000023A: 48 33 CD           xor         rcx,rbp
+  000000000000023D: E8 00 00 00 00     call        __security_check_cookie
+  0000000000000242: 48 8D A5 08 02 00  lea         rsp,[rbp+208h]
+                    00
+  0000000000000249: 5F                 pop         rdi
+  000000000000024A: 5D                 pop         rbp
+  000000000000024B: C3                 ret
+
+??0?$Observer@$$V@@QEAA@XZ (public: __cdecl Observer<>::Observer<>(void)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC C8 00 00  sub         rsp,0C8h
+                    00
+  000000000000000E: 48 8B EC           mov         rbp,rsp
+  0000000000000011: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000018: 48 8D 0D 00 00 00  lea         rcx,[??_7?$Observer@$$V@@6B@]
+                    00
+  000000000000001F: 48 89 08           mov         qword ptr [rax],rcx
+  0000000000000022: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000029: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  0000000000000030: 5F                 pop         rdi
+  0000000000000031: 5D                 pop         rbp
+  0000000000000032: C3                 ret
+
+??0RuntimeScript@@QEAA@XZ (public: __cdecl RuntimeScript::RuntimeScript(void)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC 08 01 00  sub         rsp,108h
+                    00
+  000000000000000E: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  0000000000000013: 48 8D 0D 00 00 00  lea         rcx,[__7EAA856A_Runtime_Script@cpp]
+                    00
+  000000000000001A: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001F: 90                 nop
+  0000000000000020: 48 8B 8D 00 01 00  mov         rcx,qword ptr [rbp+100h]
+                    00
+  0000000000000027: E8 00 00 00 00     call        ??0?$Observer@$$V@@QEAA@XZ
+  000000000000002C: 90                 nop
+  000000000000002D: 48 8B 85 00 01 00  mov         rax,qword ptr [rbp+100h]
+                    00
+  0000000000000034: 48 8D 0D 00 00 00  lea         rcx,[??_7RuntimeScript@@6B@]
+                    00
+  000000000000003B: 48 89 08           mov         qword ptr [rax],rcx
+  000000000000003E: 48 8B 85 00 01 00  mov         rax,qword ptr [rbp+100h]
+                    00
+  0000000000000045: C6 40 08 00        mov         byte ptr [rax+8],0
+  0000000000000049: E8 00 00 00 00     call        ?GetInstance@SystemManager@@SAPEAV1@XZ
+  000000000000004E: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  0000000000000052: 48 8B 95 00 01 00  mov         rdx,qword ptr [rbp+100h]
+                    00
+  0000000000000059: 48 8D 0D 00 00 00  lea         rcx,[?gameScripts@SystemManager@@2V?$Event@$$V@@A]
+                    00
+  0000000000000060: E8 00 00 00 00     call        ?AddObserver@?$Event@$$V@@QEAAXPEAV?$Observer@$$V@@@Z
+  0000000000000065: 90                 nop
+  0000000000000066: 48 8B 85 00 01 00  mov         rax,qword ptr [rbp+100h]
+                    00
+  000000000000006D: 48 8D A5 E8 00 00  lea         rsp,[rbp+0E8h]
+                    00
+  0000000000000074: 5F                 pop         rdi
+  0000000000000075: 5D                 pop         rbp
+  0000000000000076: C3                 ret
+
+??0SystemManager@@AEAA@XZ (private: __cdecl SystemManager::SystemManager(void)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC E8 00 00  sub         rsp,0E8h
+                    00
+  000000000000000E: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  0000000000000013: 48 8D 0D 00 00 00  lea         rcx,[__529FBEE3_System_Manager@h]
+                    00
+  000000000000001A: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001F: 90                 nop
+  0000000000000020: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000027: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  000000000000002E: 5F                 pop         rdi
+  000000000000002F: 5D                 pop         rbp
+  0000000000000030: C3                 ret
+
+?EventTrigger@RuntimeScript@@UEAAXXZ (public: virtual void __cdecl RuntimeScript::EventTrigger(void)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC E8 00 00  sub         rsp,0E8h
+                    00
+  000000000000000E: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  0000000000000013: 48 8D 0D 00 00 00  lea         rcx,[__7EAA856A_Runtime_Script@cpp]
+                    00
+  000000000000001A: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001F: 90                 nop
+  0000000000000020: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000027: 0F B6 40 08        movzx       eax,byte ptr [rax+8]
+  000000000000002B: 85 C0              test        eax,eax
+  000000000000002D: 75 22              jne         0000000000000051
+  000000000000002F: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000036: 48 8B 00           mov         rax,qword ptr [rax]
+  0000000000000039: 48 8B 8D E0 00 00  mov         rcx,qword ptr [rbp+0E0h]
+                    00
+  0000000000000040: FF 50 08           call        qword ptr [rax+8]
+  0000000000000043: 90                 nop
+  0000000000000044: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  000000000000004B: C6 40 08 01        mov         byte ptr [rax+8],1
+  000000000000004F: EB 15              jmp         0000000000000066
+  0000000000000051: 48 8B 85 E0 00 00  mov         rax,qword ptr [rbp+0E0h]
+                    00
+  0000000000000058: 48 8B 00           mov         rax,qword ptr [rax]
+  000000000000005B: 48 8B 8D E0 00 00  mov         rcx,qword ptr [rbp+0E0h]
+                    00
+  0000000000000062: FF 50 10           call        qword ptr [rax+10h]
+  0000000000000065: 90                 nop
+  0000000000000066: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  000000000000006D: 5F                 pop         rdi
+  000000000000006E: 5D                 pop         rbp
+  000000000000006F: C3                 ret
+
+?GetInstance@SystemManager@@SAPEAV1@XZ (public: static class SystemManager * __cdecl SystemManager::GetInstance(void)):
+  0000000000000000: 40 55              push        rbp
+  0000000000000002: 57                 push        rdi
+  0000000000000003: 48 81 EC 28 01 00  sub         rsp,128h
+                    00
+  000000000000000A: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  000000000000000F: 48 8D 0D 00 00 00  lea         rcx,[__529FBEE3_System_Manager@h]
+                    00
+  0000000000000016: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001B: 90                 nop
+  000000000000001C: 48 83 3D 00 00 00  cmp         qword ptr [?_instance@SystemManager@@0PEAV1@EA],0
+                    00 00
+  0000000000000024: 75 62              jne         0000000000000088
+  0000000000000026: B9 01 00 00 00     mov         ecx,1
+  000000000000002B: E8 00 00 00 00     call        ??2@YAPEAX_K@Z
+  0000000000000030: 48 89 85 E8 00 00  mov         qword ptr [rbp+0E8h],rax
+                    00
+  0000000000000037: 48 83 BD E8 00 00  cmp         qword ptr [rbp+0E8h],0
+                    00 00
+  000000000000003F: 74 15              je          0000000000000056
+  0000000000000041: 48 8B 8D E8 00 00  mov         rcx,qword ptr [rbp+0E8h]
+                    00
+  0000000000000048: E8 00 00 00 00     call        ??0SystemManager@@AEAA@XZ
+  000000000000004D: 48 89 85 F8 00 00  mov         qword ptr [rbp+0F8h],rax
+                    00
+  0000000000000054: EB 0B              jmp         0000000000000061
+  0000000000000056: 48 C7 85 F8 00 00  mov         qword ptr [rbp+0F8h],0
+                    00 00 00 00 00
+  0000000000000061: 48 8B 85 F8 00 00  mov         rax,qword ptr [rbp+0F8h]
+                    00
+  0000000000000068: 48 89 85 C8 00 00  mov         qword ptr [rbp+0C8h],rax
+                    00
+  000000000000006F: 48 8B 85 C8 00 00  mov         rax,qword ptr [rbp+0C8h]
+                    00
+  0000000000000076: 48 89 05 00 00 00  mov         qword ptr [?_instance@SystemManager@@0PEAV1@EA],rax
+                    00
+  000000000000007D: 48 8B 05 00 00 00  mov         rax,qword ptr [?_instance@SystemManager@@0PEAV1@EA]
+                    00
+  0000000000000084: EB 09              jmp         000000000000008F
+  0000000000000086: EB 07              jmp         000000000000008F
+  0000000000000088: 48 8B 05 00 00 00  mov         rax,qword ptr [?_instance@SystemManager@@0PEAV1@EA]
+                    00
+  000000000000008F: 48 8D A5 08 01 00  lea         rsp,[rbp+108h]
+                    00
+  0000000000000096: 5F                 pop         rdi
+  0000000000000097: 5D                 pop         rbp
+  0000000000000098: C3                 ret
+
+?dtor$0@?0??GetInstance@SystemManager@@SAPEAV1@XZ@4HA (int `public: static class GetInstance * __cdecl SystemManager::GetInstance(void)'::`1'::dtor$0):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 48 89 54 24 10     mov         qword ptr [rsp+10h],rdx
+  000000000000000A: 55                 push        rbp
+  000000000000000B: 57                 push        rdi
+  000000000000000C: 48 83 EC 28        sub         rsp,28h
+  0000000000000010: 48 8D 6A 20        lea         rbp,[rdx+20h]
+  0000000000000014: BA 01 00 00 00     mov         edx,1
+  0000000000000019: 48 8B 8D E8 00 00  mov         rcx,qword ptr [rbp+0E8h]
+                    00
+  0000000000000020: E8 00 00 00 00     call        ??3@YAXPEAX_K@Z
+  0000000000000025: 48 83 C4 28        add         rsp,28h
+  0000000000000029: 5F                 pop         rdi
+  000000000000002A: 5D                 pop         rbp
+  000000000000002B: C3                 ret
+
+?_Maklocwcs@std@@YAPEA_WPEB_W@Z (wchar_t * __cdecl std::_Maklocwcs(wchar_t const *)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC 38 01 00  sub         rsp,138h
+                    00
+  000000000000000E: 48 8D 6C 24 30     lea         rbp,[rsp+30h]
+  0000000000000013: 48 8D 0D 00 00 00  lea         rcx,[__4342385F_xlocnum]
+                    00
+  000000000000001A: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001F: 90                 nop
+  0000000000000020: 48 8B 8D 20 01 00  mov         rcx,qword ptr [rbp+120h]
+                    00
+  0000000000000027: FF 15 00 00 00 00  call        qword ptr [__imp_wcslen]
+  000000000000002D: 48 FF C0           inc         rax
+  0000000000000030: 48 89 45 08        mov         qword ptr [rbp+8],rax
+  0000000000000034: 8B 05 00 00 00 00  mov         eax,dword ptr [?__LINE__Var@?0??_Maklocwcs@std@@YAPEA_WPEB_W@Z@4JA]
+  000000000000003A: 83 C0 03           add         eax,3
+  000000000000003D: 89 44 24 20        mov         dword ptr [rsp+20h],eax
+  0000000000000041: 4C 8D 0D 00 00 00  lea         r9,[??_C@_0GC@EIONFNBJ@C?3?2Program?5Files?2Microsoft?5Visu@]
+                    00
+  0000000000000048: 41 B8 02 00 00 00  mov         r8d,2
+  000000000000004E: BA 02 00 00 00     mov         edx,2
+  0000000000000053: 48 8B 4D 08        mov         rcx,qword ptr [rbp+8]
+  0000000000000057: FF 15 00 00 00 00  call        qword ptr [__imp__calloc_dbg]
+  000000000000005D: 48 89 45 28        mov         qword ptr [rbp+28h],rax
+  0000000000000061: 48 83 7D 28 00     cmp         qword ptr [rbp+28h],0
+  0000000000000066: 75 06              jne         000000000000006E
+  0000000000000068: E8 00 00 00 00     call        ?_Xbad_alloc@std@@YAXXZ
+  000000000000006D: 90                 nop
+  000000000000006E: 4C 8B 45 08        mov         r8,qword ptr [rbp+8]
+  0000000000000072: 48 8B 95 20 01 00  mov         rdx,qword ptr [rbp+120h]
+                    00
+  0000000000000079: 48 8B 4D 28        mov         rcx,qword ptr [rbp+28h]
+  000000000000007D: E8 00 00 00 00     call        wmemcpy
+  0000000000000082: 90                 nop
+  0000000000000083: 48 8B 45 28        mov         rax,qword ptr [rbp+28h]
+  0000000000000087: 48 8D A5 08 01 00  lea         rsp,[rbp+108h]
+                    00
+  000000000000008E: 5F                 pop         rdi
+  000000000000008F: 5D                 pop         rbp
+  0000000000000090: C3                 ret
+
+?__empty_global_delete@@YAXPEAX@Z (void __cdecl __empty_global_delete(void *)):
+  0000000000000000: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  0000000000000005: 55                 push        rbp
+  0000000000000006: 57                 push        rdi
+  0000000000000007: 48 81 EC E8 00 00  sub         rsp,0E8h
+                    00
+  000000000000000E: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  0000000000000013: 48 8D 0D 00 00 00  lea         rcx,[__7EAA856A_Runtime_Script@cpp]
+                    00
+  000000000000001A: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  000000000000001F: 90                 nop
+  0000000000000020: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  0000000000000027: 5F                 pop         rdi
+  0000000000000028: 5D                 pop         rbp
+  0000000000000029: C3                 ret
+
+?__empty_global_delete@@YAXPEAX_K@Z (void __cdecl __empty_global_delete(void *,unsigned __int64)):
+  0000000000000000: 48 89 54 24 10     mov         qword ptr [rsp+10h],rdx
+  0000000000000005: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000A: 55                 push        rbp
+  000000000000000B: 57                 push        rdi
+  000000000000000C: 48 81 EC E8 00 00  sub         rsp,0E8h
+                    00
+  0000000000000013: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  0000000000000018: 48 8D 0D 00 00 00  lea         rcx,[__7EAA856A_Runtime_Script@cpp]
+                    00
+  000000000000001F: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  0000000000000024: 90                 nop
+  0000000000000025: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  000000000000002C: 5F                 pop         rdi
+  000000000000002D: 5D                 pop         rbp
+  000000000000002E: C3                 ret
+
+__JustMyCode_Default:
+  0000000000000000: C2 00 00           ret         0
+
+wmemcpy:
+  0000000000000000: 4C 89 44 24 18     mov         qword ptr [rsp+18h],r8
+  0000000000000005: 48 89 54 24 10     mov         qword ptr [rsp+10h],rdx
+  000000000000000A: 48 89 4C 24 08     mov         qword ptr [rsp+8],rcx
+  000000000000000F: 55                 push        rbp
+  0000000000000010: 57                 push        rdi
+  0000000000000011: 48 81 EC E8 00 00  sub         rsp,0E8h
+                    00
+  0000000000000018: 48 8D 6C 24 20     lea         rbp,[rsp+20h]
+  000000000000001D: 48 8D 0D 00 00 00  lea         rcx,[__3FCAD62E_wchar@h]
+                    00
+  0000000000000024: E8 00 00 00 00     call        __CheckForDebuggerJustMyCode
+  0000000000000029: 90                 nop
+  000000000000002A: 48 8B 85 F0 00 00  mov         rax,qword ptr [rbp+0F0h]
+                    00
+  0000000000000031: 48 D1 E0           shl         rax,1
+  0000000000000034: 4C 8B C0           mov         r8,rax
+  0000000000000037: 48 8B 95 E8 00 00  mov         rdx,qword ptr [rbp+0E8h]
+                    00
+  000000000000003E: 48 8B 8D E0 00 00  mov         rcx,qword ptr [rbp+0E0h]
+                    00
+  0000000000000045: E8 00 00 00 00     call        memcpy
+  000000000000004A: 48 8D A5 C8 00 00  lea         rsp,[rbp+0C8h]
+                    00
+  0000000000000051: 5F                 pop         rdi
+  0000000000000052: 5D                 pop         rbp
+  0000000000000053: C3                 ret
+
+  Summary
+
+         2C8 .chks64
+           4 .data
+          49 .data$rs
+       13FD8 .debug$S
+          74 .debug$T
+         190 .drectve
+          C6 .msvcjmc
+          A8 .pdata
+         20B .rdata
+          D8 .rdata$r
+           8 .rtc$IMZ
+           8 .rtc$TMZ
+         905 .text$mn
+          2C .text$x
+           6 .voltbl
+         102 .xdata
