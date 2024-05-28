@@ -177,8 +177,25 @@ public:
         }
     }
 
+    glm::vec3 cubePositions[10] = {
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3(2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3(1.3f, -2.0f, -2.5f),
+        glm::vec3(1.5f, 2.0f, -2.5f),
+        glm::vec3(1.5f, 0.2f, -1.5f),
+        glm::vec3(-1.3f, 1.0f, -1.5f)
+    };
+
+    float time = 0;
     void Render()
     {
+        unsigned int timeLoc = glGetUniformLocation(shaderId, "time");
+        glUniform1f(timeLoc, time);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] + 0.1f, glm::vec3(1, 0, 0));
@@ -197,11 +214,13 @@ public:
             worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(0, 1, 0));
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            time += 0.1f;
+        }
+
         unsigned int transformMLoc = glGetUniformLocation(shaderId, "transformationMatrix");
         glUniformMatrix4fv(transformMLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-        unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
-        glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
 
         unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
         glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(viewTrans));
@@ -212,7 +231,15 @@ public:
         unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
         glUniform1i(texture1Loc, 1);
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+        for (int x = 0; x <= 10; x++)
+        {
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+            unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
+            glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(glm::translate(worldTrans, cubePositions[x])));
+        }
+        
     }
 
     void InitializeRender()
