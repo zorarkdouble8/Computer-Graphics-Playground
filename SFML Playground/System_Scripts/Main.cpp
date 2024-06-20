@@ -32,6 +32,13 @@
 
 using namespace std;
 
+static float deltaTime;
+
+void CalculateDeltaTime()
+{
+
+}
+
 void DeleteScripts(vector<Observer<>*> scripts)
 {
     for (Observer<>* observer: scripts)

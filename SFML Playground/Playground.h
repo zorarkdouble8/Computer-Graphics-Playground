@@ -214,9 +214,31 @@ public:
             worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(0, 1, 0));
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        {
+            worldTrans = glm::translate(worldTrans, glm::vec3(0, 0, -1));
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        {
+            worldTrans = glm::translate(worldTrans, glm::vec3(0, 0, 1));
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            worldTrans = glm::translate(worldTrans, glm::vec3(0, -1, 0));
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            worldTrans = glm::translate(worldTrans, glm::vec3(0, 1, 0));
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            time += 0.1f;
+            worldTrans = glm::translate(worldTrans, glm::vec3(1, 0, 0));
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        {
+            worldTrans = glm::translate(worldTrans, glm::vec3(-1, 0, 0));
         }
 
         unsigned int transformMLoc = glGetUniformLocation(shaderId, "transformationMatrix");
