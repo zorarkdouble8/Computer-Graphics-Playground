@@ -18,11 +18,13 @@ using namespace std;
 class Playground: public RuntimeScript
 {
 public:
-    glm::mat4x4 transform = glm::mat4(1.0f);
+    glm::mat4x4 modelTrans = glm::mat4(1.0f);
     glm::mat4x4 worldTrans = glm::mat4(1.0f);
     glm::mat4x4 viewTrans = glm::mat4(1.0f);
     glm::mat4x4 projTrans = glm::mat4(1.0f);
 
+    //Camera stuff!
+    glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
 
     void CheckErrors()
     {
@@ -198,20 +200,20 @@ public:
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] + 0.1f, glm::vec3(1, 0, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(5.0f), glm::vec3(-1, 0, 0));
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(1, 0, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(5.0f), glm::vec3(1, 0, 0));
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] + 0.1f, glm::vec3(0, 1, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(1.0f), glm::vec3(0, -1, 0));
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            worldTrans = glm::rotate(worldTrans, glm::eulerAngles(glm::toQuat(transform))[0] - 0.1f, glm::vec3(0, 1, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(1.0f), glm::vec3(0, 1, 0));
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
@@ -241,8 +243,10 @@ public:
             worldTrans = glm::translate(worldTrans, glm::vec3(-1, 0, 0));
         }
 
-        unsigned int transformMLoc = glGetUniformLocation(shaderId, "transformationMatrix");
-        glUniformMatrix4fv(transformMLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        unsigned int modelTransLoc = glGetUniformLocation(shaderId, "modelTransformation");
+
+        unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
+        glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
 
         unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
         glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(viewTrans));
@@ -256,12 +260,15 @@ public:
 
         for (int x = 0; x <= 10; x++)
         {
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+            modelTrans = glm::mat4x4(1.0f);
+            modelTrans = glm::translate(modelTrans, cubePositions[x]);
+            modelTrans = glm::rotate(modelTrans, (float) (3.14 / 8) * x, glm::vec3(0, 1, 0));
 
-            unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
-            glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(glm::translate(worldTrans, cubePositions[x])));
-        }
-        
+            glUniformMatrix4fv(modelTransLoc, 1, GL_FALSE, glm::value_ptr(modelTrans));
+
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+
+        }        
     }
 
     void InitializeRender()
@@ -325,8 +332,8 @@ public:
 
 	void Start()
 	{
-        worldTrans = glm::rotate(worldTrans, glm::radians(-55.0f), glm::vec3(1, 0, 0));
-        viewTrans = glm::translate(viewTrans, glm::vec3(0, 0, -3.0f));
+        /*worldTrans = glm::rotate(worldTrans, glm::radians(-55.0f), glm::vec3(1, 0, 0));
+        viewTrans = glm::translate(viewTrans, glm::vec3(0, 0, -3.0f));*/
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         InitializeRender();
