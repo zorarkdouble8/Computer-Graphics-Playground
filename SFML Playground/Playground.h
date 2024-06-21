@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/ext/quaternion_geometric.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
@@ -25,6 +26,13 @@ public:
 
     //Camera stuff!
     glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f);
+
+    glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraTarget);
+    glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
+    glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);
+
+    glm::mat4 view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
 
     void CheckErrors()
     {
@@ -249,7 +257,7 @@ public:
         glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
 
         unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
-        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(viewTrans));
+        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(view));
 
         unsigned int projectTransLoc = glGetUniformLocation(shaderId, "projectionTransform");
         glUniformMatrix4fv(projectTransLoc, 1, GL_FALSE, glm::value_ptr(projTrans));
@@ -338,7 +346,7 @@ public:
 
         InitializeRender();
 	}
-
+    
 	void Update()
 	{
         Render();
