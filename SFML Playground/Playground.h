@@ -25,14 +25,65 @@ public:
     glm::mat4x4 projTrans = glm::mat4(1.0f);
 
     //Camera stuff!
-    glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+    class Camera
+    {
+    public:
+        Camera()
+        {
+            this->position = glm::vec3(0.0f, 0.0f, 0.0f);
+            this->rotation = glm::vec3(0.0f);
+        }
+
+        //----Variables----
+        glm::vec3 position;
+        //In radians
+        glm::vec3 rotation;
+
+        //----Methods----
+        glm::mat4 GetTransformationMatrix() 
+        {
+            //calculate where the camera should look at based on rotation
+            glm::vec3 cameraTarget = glm::vec3(cos(this->rotation.x), sin(this->rotation.x), cos(this->rotation.z));
+            cameraTarget += this->position;
+            
+            //glm::vec3 cameraTarget = glm::vec3(0.0f);
+
+            glm::vec3 cameraDirection = glm::normalize(this->position - cameraTarget);
+            glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
+            glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);
+
+            return glm::lookAt(this->position, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+
+        glm::vec3 ToLocalCords(glm::vec3 worldCords)
+        {
+            glm::vec3 cameraTarget = glm::vec3(cos(this->rotation.x), sin(this->rotation.x), cos(this->rotation.z));
+            cameraTarget += this->position;
+
+            glm::vec3 cameraDirection = glm::normalize(this->position - cameraTarget);
+            glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
+            glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);
+            glm::mat3 view = glm::lookAt(this->position, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
+
+            glm::vec3 test = worldCords * view;
+
+            return test;
+        }
+    private:
+        
+
+
+    };
+   /* glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
     glm::vec3 cameraTarget = glm::vec3(0.0f);
 
     glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraTarget);
     glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
-    glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);
+    glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);*/
 
-    glm::mat4 view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    Camera camera;
 
     void CheckErrors()
     {
@@ -201,6 +252,8 @@ public:
     };
 
     float time = 0;
+    float speed = 0.1f;
+
     void Render()
     {
         unsigned int timeLoc = glGetUniformLocation(shaderId, "time");
@@ -208,11 +261,11 @@ public:
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            viewTrans = glm::rotate(viewTrans, glm::radians(5.0f), glm::vec3(-1, 0, 0));
+            camera.rotation.z += 3.14 / 80;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            viewTrans = glm::rotate(viewTrans, glm::radians(5.0f), glm::vec3(1, 0, 0));
+            camera.rotation.z -= 3.14 / 80;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -226,29 +279,33 @@ public:
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(0, 0, -1));
+            glm::vec3 cameraPos = camera.position;
+            cameraPos.x += 1.0f * speed;
+            camera.position = camera.ToLocalCords(cameraPos);
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(0, 0, 1));
+            glm::vec3 cameraPos = camera.position;
+            cameraPos.x -= 1.0f * speed;
+            camera.position = camera.ToLocalCords(cameraPos);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(0, -1, 0));
+            camera.position.z += 1.0f * speed;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(0, 1, 0));
+            camera.position.z -= 1.0f * speed;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(1, 0, 0));
+            camera.position.x += 1.0f * speed;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            worldTrans = glm::translate(worldTrans, glm::vec3(-1, 0, 0));
+            camera.position.x -= 1.0f * speed;
         }
 
         unsigned int modelTransLoc = glGetUniformLocation(shaderId, "modelTransformation");
@@ -257,7 +314,7 @@ public:
         glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
 
         unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
-        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(camera.GetTransformationMatrix()));
 
         unsigned int projectTransLoc = glGetUniformLocation(shaderId, "projectionTransform");
         glUniformMatrix4fv(projectTransLoc, 1, GL_FALSE, glm::value_ptr(projTrans));
@@ -265,6 +322,11 @@ public:
         unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
         glUniform1i(texture1Loc, 1);
 
+        /*cameraDirection = glm::normalize(cameraPosition - cameraTarget);
+        cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
+        cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);*/
+
+        //view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
 
         for (int x = 0; x <= 10; x++)
         {
