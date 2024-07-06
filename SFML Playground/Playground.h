@@ -28,80 +28,54 @@ public:
     class Camera
     {
     public:
-        Camera()
-        {
-
-        }
-
         //----Variables----
         glm::vec3 position = glm::vec3(0.0f);
         glm::vec3 localPosition = glm::vec3(0.0f);
 
-        //In radians
+        //In degrees
         glm::vec3 rotation = glm::vec3(0.0f);
-        glm::vec3 localRotation = glm::vec3(0.0f);
-
-        glm::mat4 localTrans = glm::mat3(1.0f);
-        glm::mat4 worldTrans = glm::mat3(1.0f);
-
         glm::vec3 cameraFront = glm::vec3(0.0f);
             
         //----Methods----
+        //returns a view transformation matrix
         glm::mat4 GetTransformationMatrix() 
         {
-            /*
-            1. translate worldTrans to new position
-            //2. find the direction of the camera based on rotation (Can I use a rotation call?)
-            2. rotate the worldTrans based on rotation
+            glm::mat4 viewTrans = glm::mat4(1.0f);
             
-            3. convert worldTrans into a mat4 matrix
-            4. return
-            
-            */ 
-            localTrans = glm::mat4(1.0f);
-            
+            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.x), glm::vec3(1, 0, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.z), glm::vec3(0, 0, 1));
 
-            //local
-            localTrans = glm::rotate(localTrans, glm::radians(localRotation.x), glm::vec3(1, 0, 0));
-            localTrans = glm::rotate(localTrans, glm::radians(localRotation.y), glm::vec3(0, 1, 0));
-            localTrans = glm::rotate(localTrans, glm::radians(localRotation.z), glm::vec3(0, 0, 1));
+            viewTrans = glm::translate(viewTrans, position);
 
-            cameraFront = glm::vec3(-glm::sin(glm::radians(localRotation.y)), glm::sin(glm::radians(localRotation.x)), glm::cos(glm::radians(localRotation.x)) * glm::cos(glm::radians(localRotation.y)));
+            //update the cameraFront
+            cameraFront = glm::vec3(-glm::sin(glm::radians(rotation.y)), glm::sin(glm::radians(rotation.x)), glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(rotation.y)));
             cameraFront = glm::normalize(cameraFront);
-            
-            //world
-            worldTrans = localTrans;
 
-            worldTrans = glm::translate(worldTrans, position);
-        
-
-            
-
-           
-
-            return worldTrans;
-
-
-            // glm::vec3 direction = glm::vec3(glm::cos(glm::radians(rotation.x)), glm::sin(glm::radians(rotation.x)), 0.0f);
-
-
-          //worldTrans = glm::lookAt(this->position, this->position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
-          //worldTrans = glm::rotate(worldTrans, glm::radians(1.0f), rotation);
-
-            //calculate where the camera should look at based on rotation
-            //glm::vec3 cameraTarget = glm::vec3(cos(this->rotation.x), sin(this->rotation.x), cos(this->rotation.z));
-            //cameraTarget += this->position;
-            //
-            ////glm::vec3 cameraTarget = glm::vec3(0.0f);
-
-            //glm::vec3 cameraDirection = glm::normalize(this->position - cameraTarget);
-            //glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
-            //glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);
-
-            //return glm::lookAt(this->position, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
+            return viewTrans;
         }
 
-        //This returns the local coordinates of where the global coordinates would be at
+        void PrintCameraInfo()
+        {
+            cout << "---Camera Info----" << endl;
+            cout << "Local pos: " << this->localPosition.x << " " << this->localPosition.y << " " << this->localPosition.z << endl;
+            cout << "Local rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
+            cout << "Global pos: " << this->position.x << " " << this->position.y << " " << this->position.z << endl;
+            cout << "Global rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
+            cout << "Camera Front: " << this->cameraFront.x << " " << this->cameraFront.y << " " << this->cameraFront.z << endl;
+            cout << endl;
+        }
+
+        //I was thinking of adding local cordinates and here's how you would have them:
+        /*
+        1. have 2 separate transformation matrixs; a local and a world one.
+        2. to convert to local cordinates, times the input vector with the local transformation matrix
+        3. to convert to world cordinates, times the input vector with the world transformation matrix
+
+        The problem: How would I edit the get transformation matrix function?
+            -First I have to figure out how a local and world space interact with each other
+            -I was thinking: viewTrans = worldTrans * localTrans; and then rotate and translate each one. But the results were wonky to deal with
+        
         glm::vec3 ToLocalCords(glm::vec3 worldCords)
         {
             glm::vec4 test = glm::vec4(worldCords.x, worldCords.y, worldCords.z, 0);
@@ -116,20 +90,12 @@ public:
             test = worldTrans * test;
             return glm::vec3(test.x, test.y, test.z);
         }
-
+        */
     private:
         
 
 
     };
-   /* glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f);
-
-    glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraTarget);
-    glm::vec3 cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
-    glm::vec3 cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);*/
-
-    //glm::mat4 view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
 
     Camera camera;
 
@@ -307,113 +273,50 @@ public:
         unsigned int timeLoc = glGetUniformLocation(shaderId, "time");
         glUniform1f(timeLoc, time);
 
+        //Rotate the camera
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            camera.localRotation.x += 1.0f;
-            
-            /*
-            I need to put the local position ontop of the world position
-            Rotate the local cordinates
-            Update the world rotation
-            revert back to the local position
-            */
-
-            //glm::vec3 oldLocal = camera.localPosition;
-            //camera.localPosition = camera.ToLocalCords(camera.position);
-            //camera.localRotation.x += 1.0f;
-
-            ////update camera
-            //camera.GetTransformationMatrix();
-
-            //camera.rotation = camera.ToGlobalCords(camera.localRotation);
-            //camera.localPosition = oldLocal;
-
-            //rotate globally, convert to local cordinates
-            //camera.localRotation = camera.ToLocalCords(glm::vec3(camera.rotation.x + 1.0f, camera.rotation.y, camera.rotation.z));
-            //camera.rotation = camera.ToGlobalCords(camera.localRotation);
-  
+            camera.rotation.x += 1.0f;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            camera.localRotation.x -= 1.0f;
-
-            //glm::vec3 oldLocal = camera.localPosition;
-            //camera.localPosition = camera.ToLocalCords(camera.localRotation);
-            //camera.localRotation.x -= 1.0f;
-
-            ////update camera
-            //camera.GetTransformationMatrix();
-
-            //camera.rotation = camera.ToGlobalCords(camera.rotation);
-            //camera.localPosition = oldLocal;
-
-            //camera.localRotation = camera.ToLocalCords(glm::vec3(camera.rotation.x - 1.0f, camera.rotation.y, camera.rotation.z));
-            //camera.rotation = camera.ToGlobalCords(camera.localRotation);
+            camera.rotation.x -= 1.0f;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            camera.localRotation.y += 1.0f;
+            camera.rotation.y += 1.0f;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            camera.localRotation.y -= 1.0f;
+            camera.rotation.y -= 1.0f;
         }
-
+        //
+        //Camera Debug
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
-            cout << "---Camera Info----" << endl;
-            cout << "Local pos: " << camera.localPosition.x << " " << camera.localPosition.y << " " << camera.localPosition.z << endl;
-            cout << "Local rot: " << camera.localRotation.x << " " << camera.localRotation.y << " " << camera.localRotation.z << endl;
-            cout << "Global pos: " << camera.position.x << " " << camera.position.y << " " << camera.position.z << endl;
-            cout << "Global rot: " << camera.rotation.x << " " << camera.rotation.y << " " << camera.rotation.z << endl;
-            cout << "Camera Front: " << camera.cameraFront.x << " " << camera.cameraFront.y << " " << camera.cameraFront.z << endl;
-            cout << endl;
+            camera.PrintCameraInfo();
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        {
-            glm::vec3 cameraPos = camera.position;
-            cameraPos.x -= 1.0f * speed;
-            camera.position = camera.ToLocalCords(cameraPos);
-        }
-
+        //
+        //Move the camera
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            
-            //camera.localPosition = camera.ToLocalCords(glm::vec3(camera.position.x, camera.position.y, camera.position.z - 1.0f * speed));
-            //camera.position = camera.ToGlobalCords(camera.localPosition);
-
             camera.position += 1.0f * camera.cameraFront * speed;
-            //camera.worldTrans = glm::translate(camera.worldTrans, glm::vec3(0, 0, 1));
-
-            //glm::vec3 globalCords = camera.ToGlobalCords(camera.localPosition);
-            //globalCords.z += 1.0f * speed;
-            //camera.localPosition = camera.ToLocalCords(globalCords);
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            //camera.localPosition = camera.ToGlobalCords(glm::vec3(camera.localPosition.x, camera.localPosition.y, camera.localPosition.z - 1.0f * speed));
-            //camera.position = camera.ToGlobalCords(camera.localPosition);
-            //camera.worldTrans = glm::translate(camera.worldTrans, glm::vec3(0, 0, -1));
-
-            camera.position += -1.0f * camera.cameraFront * speed;
-
-            //glm::vec3 globalCords = camera.ToGlobalCords(camera.localPosition);
-           // globalCords.z -= 1.0f * speed;
-            //camera.localPosition = camera.ToLocalCords(globalCords);
+            camera.position += -1.0f * camera.cameraFront * speed; 
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            //camera.position.z += 1.0f * speed;
-            camera.localPosition = camera.ToLocalCords(glm::vec3(camera.position.x, camera.position.y, camera.position.z + 1.0f * speed + camera.localPosition.z));
+       
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            //camera.position.z -= 1.0f * speed;
-            camera.localPosition = camera.ToLocalCords(glm::vec3(camera.position.x, camera.position.y, camera.position.z - 1.0f * speed + camera.localPosition.z));
-        }
 
+        }
+        //
         unsigned int modelTransLoc = glGetUniformLocation(shaderId, "modelTransformation");
 
         unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
