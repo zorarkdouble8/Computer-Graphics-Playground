@@ -276,11 +276,11 @@ public:
         //Rotate the camera
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            camera.rotation.x += 1.0f;
+            camera.rotation.x -= 1.0f;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            camera.rotation.x -= 1.0f;
+            camera.rotation.x += 1.0f;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -301,22 +301,24 @@ public:
         //Move the camera
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            camera.position += 1.0f * camera.cameraFront * speed;
+            camera.position += 1.0f * speed * camera.cameraFront;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            camera.position += -1.0f * camera.cameraFront * speed; 
+            camera.position += -1.0f * speed * camera.cameraFront;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-       
+            camera.position -= 1.0f * speed * glm::cross(camera.cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-
+            camera.position += 1.0f * speed * glm::cross(camera.cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
         }
         //
+
+        //Import all transformation matrixs into the shader
         unsigned int modelTransLoc = glGetUniformLocation(shaderId, "modelTransformation");
 
         unsigned int worldTransLoc = glGetUniformLocation(shaderId, "worldTransform");
@@ -330,13 +332,8 @@ public:
 
         unsigned int texture1Loc = glGetUniformLocation(shaderId, "texture1");
         glUniform1i(texture1Loc, 1);
-
-        /*cameraDirection = glm::normalize(cameraPosition - cameraTarget);
-        cameraUp = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), cameraDirection);
-        cameraRight = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection);*/
-
-        //view = glm::lookAt(cameraPosition, cameraTarget, glm::vec3(0.0f, 1.0f, 0.0f));
-
+        //
+        //Randomize all cube positions and rotations
         for (int x = 0; x <= 10; x++)
         {
             modelTrans = glm::mat4x4(1.0f);
@@ -348,6 +345,7 @@ public:
             glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
 
         }        
+        //
     }
 
     void InitializeRender()
@@ -411,8 +409,6 @@ public:
 
 	void Start()
 	{
-        /*worldTrans = glm::rotate(worldTrans, glm::radians(-55.0f), glm::vec3(1, 0, 0));
-        viewTrans = glm::translate(viewTrans, glm::vec3(0, 0, -3.0f));*/
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         InitializeRender();
