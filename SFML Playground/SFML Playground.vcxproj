@@ -134,7 +134,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Playground.h" />
+    <ClInclude Include="CameraMovement.h" />
     <ClInclude Include="System_Scripts\Event.h" />
     <ClInclude Include="System_Scripts\Event_Manager.h" />
     <ClInclude Include="System_Scripts\Runtime_Script.h" />

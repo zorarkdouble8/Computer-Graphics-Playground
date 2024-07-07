@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <functional>
 
 #include <glad/glad.h>
 #include <SFML/System.hpp>
@@ -15,6 +16,8 @@
 
 #include "./System_Scripts/Runtime_Script.h"
 #include "./System_Scripts/System_Manager.h"
+#include "CameraMovement.h"
+
 
 using namespace std;
 class Playground: public RuntimeScript
@@ -24,81 +27,6 @@ private:
     glm::mat4x4 worldTrans = glm::mat4(1.0f);
     glm::mat4x4 viewTrans = glm::mat4(1.0f);
     glm::mat4x4 projTrans = glm::mat4(1.0f);
-
-    SystemManager* sys = SystemManager::GetInstance();
-    sf::Vector2i lastMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
-
-    //Camera stuff!
-    class Camera
-    {
-    public:
-        //----Variables----
-        glm::vec3 position = glm::vec3(0.0f);
-
-        //In degrees
-        glm::vec3 rotation = glm::vec3(0.0f);
-        glm::vec3 cameraFront = glm::vec3(0.0f);
-            
-        //----Methods----
-        //returns a view transformation matrix
-        glm::mat4 GetTransformationMatrix() 
-        {
-            glm::mat4 viewTrans = glm::mat4(1.0f);
-            
-            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-            viewTrans = glm::rotate(viewTrans, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-
-            viewTrans = glm::translate(viewTrans, position);
-
-            //update the cameraFront
-            cameraFront = glm::vec3(-glm::sin(glm::radians(rotation.y)), glm::sin(glm::radians(rotation.x)), glm::cos(glm::radians(rotation.x)) * glm::cos(glm::radians(rotation.y)));
-            cameraFront = glm::normalize(cameraFront);
-
-            return viewTrans;
-        }
-
-        void PrintCameraInfo()
-        {
-            cout << "---Camera Info----" << endl;
-            cout << "Camera rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
-            cout << "Camera pos: " << this->position.x << " " << this->position.y << " " << this->position.z << endl;
-            cout << "Camera Front: " << this->cameraFront.x << " " << this->cameraFront.y << " " << this->cameraFront.z << endl;
-            cout << endl;
-        }
-
-        //I was thinking of adding local cordinates and here's how you would have them:
-        /*
-        1. have 2 separate transformation matrixs; a local and a world one.
-        2. to convert to local cordinates, times the input vector with the local transformation matrix
-        3. to convert to world cordinates, times the input vector with the world transformation matrix
-
-        The problem: How would I edit the get transformation matrix function?
-            -First I have to figure out how a local and world space interact with each other
-            -I was thinking: viewTrans = worldTrans * localTrans; and then rotate and translate each one. But the results were wonky to deal with
-        
-        glm::vec3 ToLocalCords(glm::vec3 worldCords)
-        {
-            glm::vec4 test = glm::vec4(worldCords.x, worldCords.y, worldCords.z, 0);
-            test = localTrans * test;
-            return glm::vec3(test.x, test.y, test.z);
-        }
-
-        //This returns the global coordinates of where the local coordinates would be at
-        glm::vec3 ToGlobalCords(glm::vec3 localCords)
-        {
-            glm::vec4 test = glm::vec4(localCords.x, localCords.y, localCords.z, 0);
-            test = worldTrans * test;
-            return glm::vec3(test.x, test.y, test.z);
-        }
-        */
-    private:
-        
-
-
-    };
-
-    Camera camera;
 
     void CheckErrors()
     {
@@ -267,73 +195,13 @@ private:
     };
 
     float time = 0;
-    float speed = 0.1f;
 
     void Render()
     {
         unsigned int timeLoc = glGetUniformLocation(shaderId, "time");
         glUniform1f(timeLoc, time);
 
-        //Rotate the camera
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            camera.rotation.x -= 1.0f;
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            camera.rotation.x += 1.0f;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            camera.rotation.y += 1.0f;
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            camera.rotation.y -= 1.0f;
-        }
-        //
-        //Camera Debug
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        {
-            camera.PrintCameraInfo();
-        }
-        //
-        //Move the camera
-        //cout << sf::Mouse::getPosition(*sys->GetMainWindow()).x << " " << sf::Mouse::getPosition(*sys->GetMainWindow()).y << endl;
-        //Do Input Calculations
-        sf::Vector2i nextMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
-        sf::Vector2i direction = lastMousePos - nextMousePos;
-
-        glm::vec3 directionGLM = glm::vec3(-direction.y, -direction.x, 0.0f);
-        cout << directionGLM.x << " " << directionGLM.y << endl;
-        if (glm::isnan(directionGLM).x || glm::isnan(directionGLM).y)
-        {
-            directionGLM = glm::vec3(0.0f);
-        }
-
-        camera.rotation += directionGLM;
-
-        //
-        lastMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            camera.position += 1.0f * speed * camera.cameraFront;
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            camera.position += -1.0f * speed * camera.cameraFront;
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            camera.position -= 1.0f * speed * glm::cross(camera.cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            camera.position += 1.0f * speed * glm::cross(camera.cameraFront, glm::vec3(0.0f, 1.0f, 0.0f));
-        }
-        //
+        
 
         //Import all transformation matrixs into the shader
         unsigned int modelTransLoc = glGetUniformLocation(shaderId, "modelTransformation");
@@ -342,7 +210,7 @@ private:
         glUniformMatrix4fv(worldTransLoc, 1, GL_FALSE, glm::value_ptr(worldTrans));
 
         unsigned int viewTransLoc = glGetUniformLocation(shaderId, "viewTransform");
-        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(camera.GetTransformationMatrix()));
+        glUniformMatrix4fv(viewTransLoc, 1, GL_FALSE, glm::value_ptr(viewTrans));
 
         unsigned int projectTransLoc = glGetUniformLocation(shaderId, "projectionTransform");
         glUniformMatrix4fv(projectTransLoc, 1, GL_FALSE, glm::value_ptr(projTrans));
@@ -425,10 +293,17 @@ private:
     }
 
 public:
+    void UpdateViewMatrix(glm::mat4 cameraTransMatrix)
+    {
+        viewTrans = cameraTransMatrix;
+    }
+
 	void Start()
 	{
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
+        CameraMovement::getTransMatrix.AddFunction(UpdateViewMatrix);
+        //std::bind(Playground::UpdateViewMatrix, )
         InitializeRender();
 	}
     

@@ -23,6 +23,15 @@
     <Filter Include="Assets\Game_Scripts">
       <UniqueIdentifier>{2ba00cee-20b3-498e-972a-c3383b8d0b14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Game_Scripts\Playground">
+      <UniqueIdentifier>{b9bdf3f1-2e4e-4af9-b906-568033af5da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="A_Package">
+      <UniqueIdentifier>{6a0afa0b-f78f-4bef-8f26-4c51bf1c6caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="A_Package\Headers">
+      <UniqueIdentifier>{a1d8cb39-6874-491c-b975-71e4a79e63e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System_Scripts\Event.h">
@@ -34,17 +43,23 @@
     <ClInclude Include="System_Scripts\Runtime_Script.h">
       <Filter>System_Scripts\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="System_Scripts\Shader.h">
-      <Filter>System_Scripts\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="System_Scripts\System_Manager.h">
       <Filter>System_Scripts\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Playground.h">
-      <Filter>Assets\Game_Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h">
       <Filter>Assets\Game_Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Playground.h">
+      <Filter>Assets\Game_Scripts\Playground</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMovement.h">
+      <Filter>Assets\Game_Scripts\Playground</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\Shader.h">
+      <Filter>A_Package\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>A_Package\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -60,13 +75,7 @@
     <ClCompile Include="System_Scripts\Event_Manager.cpp">
       <Filter>System_Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="System_Scripts\Main.cpp">
-      <Filter>System_Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="System_Scripts\Runtime_Script.cpp">
-      <Filter>System_Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="System_Scripts\Shader.cpp">
       <Filter>System_Scripts</Filter>
     </ClCompile>
     <ClCompile Include="System_Scripts\System_Manager.cpp">
@@ -74,6 +83,10 @@
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>System_Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="System_Scripts\Main.cpp" />
+    <ClCompile Include="System_Scripts\Shader.cpp">
+      <Filter>A_Package</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
