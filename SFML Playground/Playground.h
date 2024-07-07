@@ -293,6 +293,14 @@ private:
     }
 
 public:
+    Playground* handle;
+    Playground(Playground* handle)
+    {
+        this->handle = handle;
+    }
+
+    Playground() {}
+
     void UpdateViewMatrix(glm::mat4 cameraTransMatrix)
     {
         viewTrans = cameraTransMatrix;
@@ -302,7 +310,8 @@ public:
 	{
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-        CameraMovement::getTransMatrix.AddFunction(UpdateViewMatrix);
+        if (handle != nullptr)
+            CameraMovement::getTransMatrix.AddFunction((std::function<void(glm::mat4)>) std::bind(&Playground::UpdateViewMatrix, handle, std::placeholders::_1));
         //std::bind(Playground::UpdateViewMatrix, )
         InitializeRender();
 	}
@@ -314,7 +323,6 @@ public:
         CheckErrors();
 	}
 };
-
 
 // A useful Example
 //void InitializeRender()

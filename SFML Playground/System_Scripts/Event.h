@@ -70,7 +70,7 @@ public:
 	}
 
 	//Uses function pointers
-	void AddFunction(void (*ptr)(parameters...))
+	void AddFunction(std::function<void(parameters...)> ptr) //switch everything to std::function to allow for binds
 	{
 		this->functions.push_back(ptr);
 	}
