@@ -14,15 +14,19 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "./System_Scripts/Runtime_Script.h"
+#include "./System_Scripts/System_Manager.h"
 
 using namespace std;
 class Playground: public RuntimeScript
 {
-public:
+private:
     glm::mat4x4 modelTrans = glm::mat4(1.0f);
     glm::mat4x4 worldTrans = glm::mat4(1.0f);
     glm::mat4x4 viewTrans = glm::mat4(1.0f);
     glm::mat4x4 projTrans = glm::mat4(1.0f);
+
+    SystemManager* sys = SystemManager::GetInstance();
+    sf::Vector2i lastMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
 
     //Camera stuff!
     class Camera
@@ -30,7 +34,6 @@ public:
     public:
         //----Variables----
         glm::vec3 position = glm::vec3(0.0f);
-        glm::vec3 localPosition = glm::vec3(0.0f);
 
         //In degrees
         glm::vec3 rotation = glm::vec3(0.0f);
@@ -58,10 +61,8 @@ public:
         void PrintCameraInfo()
         {
             cout << "---Camera Info----" << endl;
-            cout << "Local pos: " << this->localPosition.x << " " << this->localPosition.y << " " << this->localPosition.z << endl;
-            cout << "Local rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
-            cout << "Global pos: " << this->position.x << " " << this->position.y << " " << this->position.z << endl;
-            cout << "Global rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
+            cout << "Camera rot: " << this->rotation.x << " " << this->rotation.y << " " << this->rotation.z << endl;
+            cout << "Camera pos: " << this->position.x << " " << this->position.y << " " << this->position.z << endl;
             cout << "Camera Front: " << this->cameraFront.x << " " << this->cameraFront.y << " " << this->cameraFront.z << endl;
             cout << endl;
         }
@@ -299,6 +300,22 @@ public:
         }
         //
         //Move the camera
+        //cout << sf::Mouse::getPosition(*sys->GetMainWindow()).x << " " << sf::Mouse::getPosition(*sys->GetMainWindow()).y << endl;
+        //Do Input Calculations
+        sf::Vector2i nextMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
+        sf::Vector2i direction = lastMousePos - nextMousePos;
+
+        glm::vec3 directionGLM = glm::vec3(-direction.y, -direction.x, 0.0f);
+        cout << directionGLM.x << " " << directionGLM.y << endl;
+        if (glm::isnan(directionGLM).x || glm::isnan(directionGLM).y)
+        {
+            directionGLM = glm::vec3(0.0f);
+        }
+
+        camera.rotation += directionGLM;
+
+        //
+        lastMousePos = sf::Mouse::getPosition(*sys->GetMainWindow());
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
             camera.position += 1.0f * speed * camera.cameraFront;
@@ -407,6 +424,7 @@ public:
         Render();
     }
 
+public:
 	void Start()
 	{
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);

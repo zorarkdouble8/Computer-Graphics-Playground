@@ -61,14 +61,16 @@ int main()
 
     //Initialize the system
     SystemManager* sysManager = SystemManager::GetInstance();
-    sysManager->PrintSystemInfomation();
-
-    vector<Observer<>*> scripts = { new TestGameScript, new Playground };
+    sysManager->PrintSystemInfomation();    
 
     // create the window
     sf::ContextSettings windowSettings(24);
     sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, windowSettings);
     window.setVerticalSyncEnabled(true);
+
+    //Initialize main window and scripts
+    sysManager->SetMainWindow(&window);
+    vector<Observer<>*> scripts = { new TestGameScript, new Playground };
 
     // activate the window
     window.setActive(true);
