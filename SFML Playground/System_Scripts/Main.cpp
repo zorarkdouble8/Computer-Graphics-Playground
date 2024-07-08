@@ -27,7 +27,8 @@
 #include "Event.h"
 #include "System_Manager.h"
 
-#include "../Playground.h"
+#include "../Assets/Game_Scripts/Playground.h"
+#include "../Assets/Game_Scripts/CameraMovement.h"
 #include "../Assets/Game_Scripts/TestGameScript.h"
 
 using namespace std;

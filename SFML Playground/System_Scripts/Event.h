@@ -56,35 +56,35 @@ public:
 	{
 		for (int x = 0; x < this->functions.size(); x++)
 		{
-			std::function<void(parameters...)> ptr = functions.at(x);
+			std::function<void(parameters...)> aFunc = functions.at(x);
 
-			if (ptr != nullptr)
+			if (aFunc != nullptr)
 			{
-				ptr(params...);
+				aFunc(params...);
 			}
 			else
 			{
-				RemoveFunction(ptr);
+				RemoveFunction(aFunc);
 			} 
 		}
 	}
 
-	//Uses function pointers
-	void AddFunction(std::function<void(parameters...)> ptr)
+	//To add a function, use std::bind and bind a handle to it (so that I can call the correct class instance)
+	void AddFunction(std::function<void(parameters...)> aFunc)
 	{
-		this->functions.push_back(ptr);
+		this->functions.push_back(aFunc);
 	}
 
-	void operator+=(std::function<void(parameters...)> ptr)
+	void operator+=(std::function<void(parameters...)> aFunc)
 	{
-		this->AddFunction(ptr);
+		this->AddFunction(aFunc);
 	}
 	
-	void RemoveFunction(std::function<void(parameters...)> ptr)
+	void RemoveFunction(std::function<void(parameters...)> aFunc)
 	{
 		for (auto x = functions.begin(); x != functions.end();)
 		{
-			if (ptr == *x)
+			if (aFunc.target_type().hash_code() == x->target_type().hash_code())
 			{
 				x = functions.erase(x);
 			}
@@ -95,9 +95,9 @@ public:
 		}
 	}
 
-	void operator-=(std::function<void(parameters...)> ptr)
+	void operator-=(std::function<void(parameters...)> aFunc)
 	{
-		this->RemoveFunction(ptr);
+		this->RemoveFunction(aFunc);
 	}
 
 private:

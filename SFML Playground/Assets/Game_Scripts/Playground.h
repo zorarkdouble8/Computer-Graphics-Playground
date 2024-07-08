@@ -14,8 +14,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-#include "./System_Scripts/Runtime_Script.h"
-#include "./System_Scripts/System_Manager.h"
+#include "../../System_Scripts/Runtime_Script.h"
+#include "../../System_Scripts/System_Manager.h"
 #include "CameraMovement.h"
 
 

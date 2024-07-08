@@ -1,4 +1,4 @@
-C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\CameraMovement.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\CameraMovement.obj
+C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\Assets\Game_Scripts\CameraMovement.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\CameraMovement.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\glad.c;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\glad.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Event.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\Event.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Event_Manager.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\Event_Manager.obj
@@ -6,5 +6,5 @@ C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scrip
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Runtime_Script.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\Runtime_Script.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Shader.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\Shader.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\System_Manager.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\System_Manager.obj
+C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Tests\System_Tests.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\System_Tests.obj
 C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Scripts\Tests\Test.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\Test.obj
-C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\System_Tests.cpp;C:\Users\User101\Desktop\SFML and OpenGL Playground\SFML Playground\x64\Debug\System_Tests.obj
