@@ -64,14 +64,13 @@ public:
 			}
 			else
 			{
-				//TODO, remove pointers
-				std::cout << "WE GOTTA NULL PTR HERE!" << std::endl;
+				RemoveFunction(ptr);
 			} 
 		}
 	}
 
 	//Uses function pointers
-	void AddFunction(std::function<void(parameters...)> ptr) //switch everything to std::function to allow for binds
+	void AddFunction(std::function<void(parameters...)> ptr)
 	{
 		this->functions.push_back(ptr);
 	}
@@ -80,7 +79,6 @@ public:
 	{
 		this->AddFunction(ptr);
 	}
-
 	
 	void RemoveFunction(std::function<void(parameters...)> ptr)
 	{

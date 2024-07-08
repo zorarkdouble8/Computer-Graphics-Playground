@@ -88,5 +88,8 @@
     <ClCompile Include="System_Scripts\Shader.cpp">
       <Filter>A_Package</Filter>
     </ClCompile>
+    <ClCompile Include="CameraMovement.cpp">
+      <Filter>Assets\Game_Scripts\Playground</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

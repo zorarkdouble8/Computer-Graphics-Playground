@@ -144,6 +144,7 @@
     <ClInclude Include="System_Scripts\System_Manager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraMovement.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="System_Scripts\Event.cpp" />
     <ClCompile Include="System_Scripts\Event_Manager.cpp" />

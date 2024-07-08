@@ -70,7 +70,10 @@ int main()
 
     //Initialize main window and scripts
     sysManager->SetMainWindow(&window);
-    vector<Observer<>*> scripts = { new TestGameScript, new Playground };
+
+    Playground* play = new Playground();
+    play->handle = play;
+    vector<Observer<>*> scripts = { new TestGameScript, new CameraMovement };
 
     // activate the window
     window.setActive(true);

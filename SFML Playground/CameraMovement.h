@@ -21,6 +21,8 @@ public:
         getTransMatrix.Trigger(camera.GetTransformationMatrix());
     }
 
+    void Start() {}
+
     void Update()
 	{
         //Rotate the camera
