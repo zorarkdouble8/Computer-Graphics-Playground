@@ -305,13 +305,14 @@ public:
     {
         viewTrans = cameraTransMatrix;
     }
-
+    std::function<void(glm::mat4)> function;
 	void Start()
 	{
+        function = std::bind(&Playground::UpdateViewMatrix, handle, std::placeholders::_1);
         projTrans = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         if (handle != nullptr)
-            CameraMovement::getTransMatrix.AddFunction((std::function<void(glm::mat4)>) std::bind(&Playground::UpdateViewMatrix, handle, std::placeholders::_1));
+            CameraMovement::getTransMatrix.Trigger(glm::mat4(0.0f));
         //std::bind(Playground::UpdateViewMatrix, )
         InitializeRender();
 	}

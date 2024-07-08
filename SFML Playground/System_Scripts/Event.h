@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <functional>
 
 template<class... types>
 class Observer
@@ -55,7 +56,7 @@ public:
 	{
 		for (int x = 0; x < this->functions.size(); x++)
 		{
-			void (*ptr)(parameters...) = functions.at(x);
+			std::function<void(parameters...)> ptr = functions.at(x);
 
 			if (ptr != nullptr)
 			{
@@ -75,13 +76,13 @@ public:
 		this->functions.push_back(ptr);
 	}
 
-	void operator+=(void (*ptr)(parameters...))
+	void operator+=(std::function<void(parameters...)> ptr)
 	{
 		this->AddFunction(ptr);
 	}
 
 	
-	void RemoveFunction(void (*ptr)(parameters...))
+	void RemoveFunction(std::function<void(parameters...)> ptr)
 	{
 		for (auto x = functions.begin(); x != functions.end();)
 		{
@@ -96,11 +97,11 @@ public:
 		}
 	}
 
-	void operator-=(void (*ptr)(parameters...))
+	void operator-=(std::function<void(parameters...)> ptr)
 	{
 		this->RemoveFunction(ptr);
 	}
 
 private:
-	std::vector<void (*)(parameters...)> functions;
+	std::vector<std::function<void(parameters...)>> functions;
 };
