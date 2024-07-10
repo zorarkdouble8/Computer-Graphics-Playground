@@ -32,6 +32,9 @@
     <Filter Include="A_Package\Headers">
       <UniqueIdentifier>{a1d8cb39-6874-491c-b975-71e4a79e63e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Game_Scripts\Light_Scene">
+      <UniqueIdentifier>{770e3c1c-8a28-4c76-ab20-970f6dc0a346}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System_Scripts\Event.h">
@@ -60,6 +63,15 @@
     </ClInclude>
     <ClInclude Include="Assets\Game_Scripts\Playground.h">
       <Filter>Assets\Game_Scripts\Playground</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Game_Scripts\Shape_Infomation.h">
+      <Filter>Assets\Game_Scripts\Playground</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Light_Scene.h">
+      <Filter>Assets\Game_Scripts\Light_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Shape_Infomation.h">
+      <Filter>Assets\Game_Scripts\Light_Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

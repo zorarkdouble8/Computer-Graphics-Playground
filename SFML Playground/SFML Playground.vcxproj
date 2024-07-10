@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;TESTMODE=0;DEBUGMODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include;$(MSBuildProjectDirectory)\Libraries\glm_(mathematics library)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include;$(MSBuildProjectDirectory)\Libraries\glm_(mathematics library);$(MSBuildProjectDirectory)\System_Scripts</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +134,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Assets\Game_Scripts\CameraMovement.h" />
+    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Light_Scene.h" />
+    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Shape_Infomation.h" />
     <ClInclude Include="Assets\Game_Scripts\Playground.h" />
+    <ClInclude Include="Assets\Game_Scripts\Shape_Infomation.h" />
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h" />
     <ClInclude Include="System_Scripts\Camera.h" />
     <ClInclude Include="System_Scripts\Event.h" />

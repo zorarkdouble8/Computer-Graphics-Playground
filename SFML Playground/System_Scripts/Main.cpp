@@ -27,9 +27,10 @@
 #include "Event.h"
 #include "System_Manager.h"
 
-#include "../Assets/Game_Scripts/Playground.h"
+//#include "../Assets/Game_Scripts/Playground.h"
 #include "../Assets/Game_Scripts/CameraMovement.h"
 #include "../Assets/Game_Scripts/TestGameScript.h"
+#include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
 
 using namespace std;
 
@@ -72,7 +73,7 @@ int main()
     //Initialize main window and scripts
     sysManager->SetMainWindow(&window);
 
-    Playground* play = new Playground();
+    LightScene* play = new LightScene();
     play->handle = play;
     vector<Observer<>*> scripts = { new TestGameScript, new CameraMovement };
 
