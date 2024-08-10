@@ -14,10 +14,12 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+#include "../../Libraries/Image_Loader/stb_image.h"
 #include "../../System_Scripts/Runtime_Script.h"
 #include "../../System_Scripts/System_Manager.h"
 #include "CameraMovement.h"
 #include "Shape_Infomation.h"
+#include "Shader.h"
 
 using namespace std;
 class Playground: public RuntimeScript
