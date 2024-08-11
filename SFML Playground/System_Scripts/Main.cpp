@@ -42,7 +42,7 @@ using namespace Microsoft::WRL;
 
 //----Direct X----
 #include <d3d12sdklayers.h> //To get debug layer
-
+#include <d3d12.h>
 
 using namespace std;
 
@@ -83,10 +83,18 @@ public:
 void EnableDebugLayer()
 {
     //Get debug interface
-    ComPtr <Test> test;
-    test = new Test();
+    ComPtr<ID3D12Debug> debugLayer;
 
-    //D3D12GetDebugInterface()
+    if (S_OK == D3D12GetDebugInterface(IID_PPV_ARGS(&debugLayer)))
+    {
+        debugLayer->EnableDebugLayer();
+
+        cout << "Enabled debug layer" << endl;
+    }
+    else
+    {
+        cout << "Failed to enable the debug layer" << endl;
+    }
     //ID3D12Debug::
 }
 
@@ -95,6 +103,7 @@ int main()
     //start initializing DirectX
     //Initialize the pipeline
         //Enable debug layer
+    EnableDebugLayer();
     
         //Create the device
         //Create the command queue
