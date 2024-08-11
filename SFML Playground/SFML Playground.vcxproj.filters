@@ -73,6 +73,9 @@
     <ClInclude Include="Assets\Game_Scripts\Light_Scene\Shape_Infomation.h">
       <Filter>Assets\Game_Scripts\Light_Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Game_Scripts\DirectX\DirectXTest.h">
+      <Filter>Assets\Game_Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System_Scripts\Tests\Test.cpp">

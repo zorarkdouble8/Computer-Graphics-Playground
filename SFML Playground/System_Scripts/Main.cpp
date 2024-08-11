@@ -12,6 +12,8 @@
 
 #pragma once
 
+#define D3DCOMPILE_DEBUG 1 //This enables debug info information from the shader
+
 #include <iostream>
 #include <vector>
 
@@ -31,8 +33,19 @@
 #include "../Assets/Game_Scripts/CameraMovement.h"
 #include "../Assets/Game_Scripts/TestGameScript.h"
 #include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
+#include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
+
+//----Modern Windows API----
+#include <wrl.h>
+
+using namespace Microsoft::WRL;
+
+//----Direct X----
+#include <d3d12sdklayers.h> //To get debug layer
+
 
 using namespace std;
+
 
 static float deltaTime;
 
@@ -48,76 +61,119 @@ void DeleteScripts(vector<Observer<>*> scripts)
         delete observer;
     }
 }
+class Test: public IUnknown
+{
+public:
+    long unsigned int AddRef()
+    {
+        return 0;
+    }
+
+    long unsigned int Release()
+    {
+        return 0;
+    }
+
+    HRESULT QueryInterface(REFIID riid, void** ppvObject)
+    {
+
+    }
+};
+
+void EnableDebugLayer()
+{
+    //Get debug interface
+    ComPtr <Test> test;
+    test = new Test();
+
+    //D3D12GetDebugInterface()
+    //ID3D12Debug::
+}
 
 int main()
 {
-    sf::Context context;
-
-    //Initialize glad
-    if (!gladLoadGLLoader((GLADloadproc)(context.getFunction)))
-    {
-        cout << "Could not initialize GLAD!!!!" << endl;
-        return -1;
-    }
-    //
-
-    //Initialize the system
-    SystemManager* sysManager = SystemManager::GetInstance();
-    sysManager->PrintSystemInfomation();    
-
-    // create the window
-    sf::ContextSettings windowSettings(24);
-    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, windowSettings);
-    window.setVerticalSyncEnabled(true);
-
-    //Initialize main window and scripts
-    sysManager->SetMainWindow(&window);
-
-    LightScene* play = new LightScene();
-    play->handle = play;
-    vector<Observer<>*> scripts = { new TestGameScript, new CameraMovement };
-
-    // activate the window
-    window.setActive(true);
-
-    // run the main loop
-    bool running = true;
-    while (running)
-    {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                // end the program
-                running = false;
-            }
-            else if (event.type == sf::Event::Resized)
-            {
-                // adjust the viewport when the window is resized
-                glViewport(0, 0, event.size.width, event.size.height);
-            }
-        }
-
-        // clear the buffers
-        glClearColor(0, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //start initializing DirectX
+    //Initialize the pipeline
+        //Enable debug layer
     
-        // Call scripts
-        sysManager->UpdateSystemScripts();
-        sysManager->UpdateGameScripts();
-        
-        // end the current frame (internally swaps the front and back buffers)
-        window.display();
-    }
-
-    // release resources...
-    DeleteScripts(scripts);
-    sysManager->DeleteInstance();
-
-    //TODO destroy scripts and get valgrind to tell me about memory leaks
-
-    return 0;
+        //Create the device
+        //Create the command queue
+        //create the swap chain
+        //Create a render target view(RTV) descriptor heap
+        //Create frame resources
+        //Create a command allocator
 }
+
+
+//int main()
+//{
+//    sf::Context context;
+//
+//    //Initialize glad
+//    if (!gladLoadGLLoader((GLADloadproc)(context.getFunction)))
+//    {
+//        cout << "Could not initialize GLAD!!!!" << endl;
+//        return -1;
+//    }
+//    //
+//
+//    //Initialize the system
+//    SystemManager* sysManager = SystemManager::GetInstance();
+//    sysManager->PrintSystemInfomation();    
+//
+//    // create the window
+//    sf::ContextSettings windowSettings(24);
+//    sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, windowSettings);
+//    window.setVerticalSyncEnabled(true);
+//
+//    //Initialize main window and scripts
+//    sysManager->SetMainWindow(&window);
+//
+//    /*LightScene* play = new LightScene();
+//    play->handle = play;*/
+//    vector<Observer<>*> scripts = { new DirectX()/*new TestGameScript, new CameraMovement*/};
+//
+//    // activate the window
+//    window.setActive(true);
+//
+//    // run the main loop
+//    bool running = true;
+//    while (running)
+//    {
+//        // handle events
+//        sf::Event event;
+//        while (window.pollEvent(event))
+//        {
+//            if (event.type == sf::Event::Closed)
+//            {
+//                // end the program
+//                running = false;
+//            }
+//            else if (event.type == sf::Event::Resized)
+//            {
+//                // adjust the viewport when the window is resized
+//                glViewport(0, 0, event.size.width, event.size.height);
+//            }
+//        }
+//
+//        // clear the buffers
+//        glClearColor(0, 0, 0, 1);
+//        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    
+//        // Call scripts
+//        sysManager->UpdateSystemScripts();
+//        sysManager->UpdateGameScripts();
+//        
+//        // end the current frame (internally swaps the front and back buffers)
+//        window.display();
+//    }
+//
+//    // release resources...
+//    DeleteScripts(scripts);
+//    sysManager->DeleteInstance();
+//
+//    //TODO destroy scripts and get valgrind to tell me about memory leaks
+//
+//    return 0;
+//}
 #endif
