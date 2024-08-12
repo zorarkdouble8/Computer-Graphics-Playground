@@ -36,6 +36,9 @@
 #include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
 #include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
 
+//----Windows Window classes----
+#include <WinUser.h>
+
 //----Modern Windows API----
 #include <wrl.h>
 
@@ -196,6 +199,16 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3
 
 int main()
 {
+    //Create a window!
+    string className = "My windows class";
+    WNDCLASSEXA window;
+
+    //Register window to the operating system
+    RegisterClassExA(&window);
+    CreateWindowExA(WS_EX_WINDOWEDGE, NULL, NULL, WS_CAPTION, 100, 100, 500, 500, NULL, NULL, NULL, NULL);
+    
+
+
     //start initializing DirectX
     //---Initialize the pipeline---
     
@@ -211,7 +224,7 @@ int main()
     ComPtr<ID3D12CommandQueue> cmdQueue = CreateCommandQueue(device);
 
     //create the swap chain
-    ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue);
+    //ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue);
 
         //Create a render target view(RTV) descriptor heap
         //Create frame resources
