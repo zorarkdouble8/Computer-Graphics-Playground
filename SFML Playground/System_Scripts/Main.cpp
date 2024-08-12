@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 
 #include <glad/glad.h>
 #include <SFML/OpenGL.hpp>
@@ -42,7 +43,9 @@ using namespace Microsoft::WRL;
 
 //----Direct X----
 #include <d3d12sdklayers.h> //To get debug layer
-#include <d3d12.h>
+#include <d3d12.h> //For general API
+#include <dxgi.h> //For DXGI objects
+#include <dxgi1_2.h> //For display modes
 
 using namespace std;
 
@@ -80,8 +83,23 @@ public:
     }
 };
 
+void DXThrowIfFail(HRESULT result, bool printException = true)
+{
+    //there are some unknown errors
+    if (result != S_OK)
+    {
+        if (printException)
+            cout << "EXCEPTION: " << "Failure to create a object! " << "HRESULT CODE: " << "0x" << hex << (unsigned int) result << endl;
+
+        throw runtime_error("");
+    }
+}
+
+//This enables the debug layer inside DirectX
 void EnableDebugLayer()
 {
+    //TODO: Enable GPU based validation: https://learn.microsoft.com/en-us/windows/win32/direct3d12/using-d3d12-debug-layer-gpu-based-validation
+
     //Get debug interface
     ComPtr<ID3D12Debug> debugLayer;
 
@@ -95,22 +113,111 @@ void EnableDebugLayer()
     {
         cout << "Failed to enable the debug layer" << endl;
     }
-    //ID3D12Debug::
+}
+
+ComPtr<IDXGIFactory1> CreateFactory()
+{
+    ComPtr<IDXGIFactory1> GIFactory;
+    DXThrowIfFail(CreateDXGIFactory1(IID_PPV_ARGS(&GIFactory)));
+    cout << "Created the Factory successfully" << endl;
+
+    return GIFactory;
+}
+
+//Creates a DXGI Factory
+ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory1> GIFactory, bool createWARP = false)
+{
+    //TODO: Option to creat warp adapter (use method CreateWarpAdapter)
+    ComPtr<IDXGIAdapter> adapter;
+    cout << setfill('-') << setw(20) << " " << endl;
+    cout << "Available adapters: " << endl;
+
+    for (int x = 0; ; x++)
+    {
+        try
+        {
+            DXThrowIfFail(GIFactory->EnumAdapters(x, &adapter), false);
+            DXGI_ADAPTER_DESC adapterDesc;
+            adapter->GetDesc(&adapterDesc);
+            wcout << "ID: " << x << " " << adapterDesc.Description << endl;
+            
+        }
+        catch(...)
+        {
+            break;
+        }
+    }
+
+    cout << endl << "Chosing the invidia graphics card (ID 0)" << endl;
+    cout << setfill('-') << setw(20) << " " << endl;
+    
+    DXThrowIfFail(GIFactory->EnumAdapters(0, &adapter));
+
+    ComPtr<ID3D12Device3> device;
+    DXThrowIfFail(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&device)));
+    return device;
+}
+
+ComPtr<ID3D12CommandQueue> CreateCommandQueue(ComPtr<ID3D12Device> device)
+{
+    D3D12_COMMAND_QUEUE_DESC commandDesc;
+    commandDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+    commandDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+    commandDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+    commandDesc.NodeMask = 0;
+
+    ComPtr<ID3D12CommandQueue> cmdQueue;
+    DXThrowIfFail(device->CreateCommandQueue(&commandDesc, IID_PPV_ARGS(&cmdQueue)));
+
+    return cmdQueue;
+}
+
+ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3D12CommandQueue> cmdQueue)
+{
+    DXGI_SWAP_CHAIN_DESC swapChainDesc;
+
+    //Creating the swapChainDesc!!!
+    swapChainDesc.BufferDesc.Width = 0;
+    swapChainDesc.BufferDesc.Height = 0;
+    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_UNKNOWN;
+    swapChainDesc.BufferCount = 1;
+    swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
+    swapChainDesc.BufferCount = 1;
+    swapChainDesc.OutputWindow; //TODO, add handle to output!
+    swapChainDesc.Windowed = false;
+
+    //
+    //-----------------------------
+    ComPtr<IDXGISwapChain> swapChain;
+    DXThrowIfFail(factory->CreateSwapChain(cmdQueue.Get(), &swapChainDesc, &swapChain));
+
+    return swapChain;
 }
 
 int main()
 {
     //start initializing DirectX
-    //Initialize the pipeline
-        //Enable debug layer
-    EnableDebugLayer();
+    //---Initialize the pipeline---
     
-        //Create the device
-        //Create the command queue
-        //create the swap chain
+    //Enable debug layer
+    EnableDebugLayer();
+
+    //Create the device
+    ComPtr<IDXGIFactory1> GIFactory = CreateFactory();
+    ComPtr<ID3D12Device3> device = CreateDevice(GIFactory);
+    cout << "Created the Device successfully" << endl;
+    
+    //Create the command queue
+    ComPtr<ID3D12CommandQueue> cmdQueue = CreateCommandQueue(device);
+
+    //create the swap chain
+    ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue);
+
         //Create a render target view(RTV) descriptor heap
         //Create frame resources
         //Create a command allocator
+
+    return 0;
 }
 
 
