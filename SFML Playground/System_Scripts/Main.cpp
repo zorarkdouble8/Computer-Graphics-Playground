@@ -12,6 +12,14 @@
 
 #pragma once
 
+#ifndef UNICODE
+    #define UNICODE
+#endif
+
+#ifndef _UNICODE
+    #define _UNICODE
+#endif
+
 #define D3DCOMPILE_DEBUG 1 //This enables debug info information from the shader
 
 #include <iostream>
@@ -37,7 +45,6 @@
 #include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
 
 //----Windows Window classes----
-#define UNICODE
 #include <WinUser.h>
 #include <Windows.h>
 #include <WinBase.h> //for the entry point
@@ -92,7 +99,7 @@ public:
 void DXThrowIfFail(HRESULT result, bool printException = true)
 {
     //there are some unknown errors
-    if (result != S_OK)
+    if (FAILED(result))
     {
         if (printException)
             cout << "EXCEPTION: " << "Failure to create a object! " << "HRESULT CODE: " << "0x" << hex << (unsigned int) result << endl;
@@ -201,19 +208,41 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3
 }
 
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
-LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    //TODO; figure this out
-    return 0;
+    switch (msg)
+    {
+        case WM_PAINT:
+        {
+            PAINTSTRUCT paintSet = { 0 };
+            HDC context = BeginPaint(hwnd, &paintSet);
+
+            //Paint stuff here
+
+            FillRect(context, &paintSet.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+            EndPaint(hwnd, &paintSet);
+            
+            return 1;
+        }
+        case WM_CLOSE:
+        {
+            DestroyWindow(hwnd);
+            PostQuitMessage(WM_QUIT); // this will message all window procedures to quit
+            return 1;
+        }
+    }
+
+    return DefWindowProc(hwnd, msg, wParam, lParam);
 }
+
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
 {
     //Create a window!
     string className = "My windows class";
-    WNDCLASSEXA window = { 0 }; //Add onto this when you want to add a Icon
-    window.cbSize = sizeof(WNDCLASSEXA);
-    window.style = CS_DROPSHADOW;
+    WNDCLASSEX window = { 0 }; //Add onto this when you want to add a Icon
+    window.cbSize = sizeof(WNDCLASSEX);
+    window.style = 0;
     window.lpfnWndProc = WindowProcedure;
     window.cbClsExtra = 0;
     window.cbWndExtra = 0;
@@ -222,13 +251,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
     window.hCursor = NULL;
     window.hbrBackground = NULL;
     window.lpszMenuName = NULL;
-    window.lpszClassName = "LOL";
+    window.lpszClassName = L"Main";
     window.hIconSm = NULL;
     
-    
-
     //Register window to the operating system
-    ATOM windowId = RegisterClassExA(&window);
+    ATOM windowId = RegisterClassEx(&window);
     if (windowId == 0)
     {
         //use https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499- to determine errors meaning
@@ -237,7 +264,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-    HWND windowHandle = CreateWindowExA(WS_EX_WINDOWEDGE, "LOL", "TESTING", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, NULL);
+    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, NULL);
     if (windowHandle == NULL)
     {
         system("PAUSE");
@@ -246,14 +273,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-    if (!ShowWindow(windowHandle, SW_SHOW))
+    ShowWindow(windowHandle, SW_SHOW);
+
+    MSG msgInfo;
+    while(GetMessage(&msgInfo, windowHandle, 0, 0) >= 0)
     {
-        cout << "ERROR, cannot show window!" << endl;
-        DWORD error = GetLastError();
-        return -1;
+        TranslateMessage(&msgInfo);
+        DispatchMessage(&msgInfo);
+
+
     }
 
-
+    /*
+    return 0;
     //start initializing DirectX
     //---Initialize the pipeline---
     
@@ -275,7 +307,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         //Create frame resources
         //Create a command allocator
 
-    return 0;
+    return 0;*/
 }
 
 
