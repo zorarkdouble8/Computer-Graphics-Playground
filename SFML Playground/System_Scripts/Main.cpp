@@ -37,7 +37,10 @@
 #include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
 
 //----Windows Window classes----
+#define UNICODE
 #include <WinUser.h>
+#include <Windows.h>
+#include <WinBase.h> //for the entry point
 
 //----Modern Windows API----
 #include <wrl.h>
@@ -197,16 +200,58 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3
     return swapChain;
 }
 
-int main()
+//This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    //TODO; figure this out
+    return 0;
+}
+
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
 {
     //Create a window!
     string className = "My windows class";
-    WNDCLASSEXA window;
+    WNDCLASSEXA window = { 0 }; //Add onto this when you want to add a Icon
+    window.cbSize = sizeof(WNDCLASSEXA);
+    window.style = CS_DROPSHADOW;
+    window.lpfnWndProc = WindowProcedure;
+    window.cbClsExtra = 0;
+    window.cbWndExtra = 0;
+    window.hInstance = hInstance;
+    window.hIcon = NULL;
+    window.hCursor = NULL;
+    window.hbrBackground = NULL;
+    window.lpszMenuName = NULL;
+    window.lpszClassName = "LOL";
+    window.hIconSm = NULL;
+    
+    
 
     //Register window to the operating system
-    RegisterClassExA(&window);
-    CreateWindowExA(WS_EX_WINDOWEDGE, NULL, NULL, WS_CAPTION, 100, 100, 500, 500, NULL, NULL, NULL, NULL);
-    
+    ATOM windowId = RegisterClassExA(&window);
+    if (windowId == 0)
+    {
+        //use https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499- to determine errors meaning
+        cout << "ERROR occurred when registering window" << endl;
+        DWORD error = GetLastError();
+        return -1;
+    }
+
+    HWND windowHandle = CreateWindowExA(WS_EX_WINDOWEDGE, "LOL", "TESTING", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, NULL);
+    if (windowHandle == NULL)
+    {
+        system("PAUSE");
+        cout << "ERROR occurred when making window" << endl;
+        DWORD error = GetLastError();
+        return -1;
+    }
+
+    if (!ShowWindow(windowHandle, SW_SHOW))
+    {
+        cout << "ERROR, cannot show window!" << endl;
+        DWORD error = GetLastError();
+        return -1;
+    }
 
 
     //start initializing DirectX
