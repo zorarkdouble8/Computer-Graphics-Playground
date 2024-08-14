@@ -77,7 +77,7 @@ void DeleteScripts(vector<Observer<>*> scripts)
         delete observer;
     }
 }
-class Test: public IUnknown
+class TestCOM: public IUnknown
 {
 public:
     long unsigned int AddRef()
@@ -207,19 +207,47 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3
     return swapChain;
 }
 
+struct Test
+{
+    bool test = false;
+};
+
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
+        case WM_CREATE:
+        {
+            CREATESTRUCT* stru = reinterpret_cast<CREATESTRUCT*>(lParam);
+            Test* test = reinterpret_cast<Test*>(stru->lpCreateParams);
+
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) test);
+            break;
+        }
         case WM_PAINT:
         {
             PAINTSTRUCT paintSet = { 0 };
             HDC context = BeginPaint(hwnd, &paintSet);
 
             //Paint stuff here
-
             FillRect(context, &paintSet.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+
+            Test* test = reinterpret_cast<Test*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+            LPCWSTR message = L"Test";
+            if (test->test == true)
+            {
+                message = L"SUCCEEDED";
+            }
+            else
+            {
+                message = L"FAILED";
+            }
+         
+            DrawText(context, message, -1, &paintSet.rcPaint, DT_CENTER);
+
+            
             EndPaint(hwnd, &paintSet);
             
             return 1;
@@ -264,7 +292,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, NULL);
+    Test* test = new Test;
+    test->test = true;
+
+    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, test);
     if (windowHandle == NULL)
     {
         system("PAUSE");
@@ -273,6 +304,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
+
+
     ShowWindow(windowHandle, SW_SHOW);
 
     MSG msgInfo;
@@ -280,8 +313,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
     {
         TranslateMessage(&msgInfo);
         DispatchMessage(&msgInfo);
-
-
     }
 
     /*
