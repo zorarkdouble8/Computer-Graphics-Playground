@@ -20,11 +20,14 @@
     #define _UNICODE
 #endif
 
+#define JSON_DIAGNOSTICS 1
+
 #define D3DCOMPILE_DEBUG 1 //This enables debug info information from the shader
 
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <fstream>
 
 #include <glad/glad.h>
 #include <SFML/OpenGL.hpp>
@@ -33,6 +36,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Libraries/Image_Loader/stb_image.h"
+#include "../Libraries/JSON/nlohmann/json.hpp"
 
 #include "Shader.h"
 #include "Event.h"
@@ -220,9 +224,9 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
         case WM_CREATE:
         {
             CREATESTRUCT* stru = reinterpret_cast<CREATESTRUCT*>(lParam);
-            Test* test = reinterpret_cast<Test*>(stru->lpCreateParams);
+            nlohmann::json* data = reinterpret_cast<nlohmann::json*>(stru->lpCreateParams);
 
-            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) test);
+            SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) data);
             break;
         }
         case WM_PAINT:
@@ -233,10 +237,10 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
             //Paint stuff here
             FillRect(context, &paintSet.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 
-            Test* test = reinterpret_cast<Test*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+            nlohmann::json* test = reinterpret_cast<nlohmann::json*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
             LPCWSTR message = L"Test";
-            if (test->test == true)
+            if (test->at("test") == true)
             {
                 message = L"SUCCEEDED";
             }
@@ -292,10 +296,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-    Test* test = new Test;
-    test->test = true;
+    ifstream json("./Data.json");
+    nlohmann::json data;
+    try
+    {
+        data = nlohmann::json::parse(json);
+    }
+    catch (const nlohmann::json::exception e)
+    {
+        return -1;
+    }
+    
 
-    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, test);
+    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &data);
     if (windowHandle == NULL)
     {
         system("PAUSE");
