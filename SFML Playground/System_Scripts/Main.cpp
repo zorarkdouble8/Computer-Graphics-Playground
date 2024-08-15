@@ -267,9 +267,33 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+nlohmann::json RetrieveSavedData(bool& isSuccessful)
+{
+    ifstream json("C:/Users/User101/Desktop/SFML and OpenGL Playground/SFML Playground/System_Scripts/Data.json");
+    nlohmann::json data;
+    try
+    {
+        data = nlohmann::json::parse(json);
+        isSuccessful = true;
+    }
+    catch (const nlohmann::json::exception e)
+    {
+        isSuccessful = false;
+    }
+
+    return data;
+}
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
 {
+    //get settings
+    bool isSuccessful = false;
+    nlohmann::json data = RetrieveSavedData(isSuccessful);
+    if (!isSuccessful)
+    {
+        return -1;
+    }
+
     //Create a window!
     string className = "My windows class";
     WNDCLASSEX window = { 0 }; //Add onto this when you want to add a Icon
@@ -296,18 +320,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-    ifstream json("./Data.json");
-    nlohmann::json data;
-    try
-    {
-        data = nlohmann::json::parse(json);
-    }
-    catch (const nlohmann::json::exception e)
-    {
-        return -1;
-    }
-    
-
+    //Create the window
     HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &data);
     if (windowHandle == NULL)
     {
@@ -317,10 +330,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
-
-
+    //Command the window to show
     ShowWindow(windowHandle, SW_SHOW);
 
+    //Get messages and distribute them to windows
     MSG msgInfo;
     while(GetMessage(&msgInfo, windowHandle, 0, 0) >= 0)
     {
@@ -328,8 +341,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         DispatchMessage(&msgInfo);
     }
 
-    /*
     return 0;
+    /*  
     //start initializing DirectX
     //---Initialize the pipeline---
     
