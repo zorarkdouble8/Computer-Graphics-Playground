@@ -1,3 +1,8 @@
 {
-    "test": true
+    "Windows": [
+        {"Classname": {
+            "test": true,
+            "yoMama": false
+        }}
+    ]
 }

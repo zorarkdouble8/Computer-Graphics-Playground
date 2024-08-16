@@ -41,6 +41,7 @@
 #include "Shader.h"
 #include "Event.h"
 #include "System_Manager.h"
+#include "helpers.h"
 
 //#include "../Assets/Game_Scripts/Playground.h"
 #include "../Assets/Game_Scripts/CameraMovement.h"
@@ -237,21 +238,11 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
             //Paint stuff here
             FillRect(context, &paintSet.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 
-            nlohmann::json* test = reinterpret_cast<nlohmann::json*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+            nlohmann::json* jsonData = reinterpret_cast<nlohmann::json*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
-            LPCWSTR message = L"Test";
-            if (test->at("test") == true)
-            {
-                message = L"SUCCEEDED";
-            }
-            else
-            {
-                message = L"FAILED";
-            }
-         
-            DrawText(context, message, -1, &paintSet.rcPaint, DT_CENTER);
+            LPCWSTR lpcwData = stringToLPCWSTR(jsonData->dump());
+            DrawText(context, lpcwData, -1, &paintSet.rcPaint, DT_CENTER);
 
-            
             EndPaint(hwnd, &paintSet);
             
             return 1;

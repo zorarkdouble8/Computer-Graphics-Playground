@@ -76,6 +76,12 @@
     <ClInclude Include="Assets\Game_Scripts\DirectX\DirectXTest.h">
       <Filter>Assets\Game_Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="System_Scripts\DataFuncs.h">
+      <Filter>System_Scripts\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="System_Scripts\helpers.h">
+      <Filter>System_Scripts\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System_Scripts\Tests\Test.cpp">

@@ -141,8 +141,10 @@
     <ClInclude Include="Assets\Game_Scripts\Shape_Infomation.h" />
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h" />
     <ClInclude Include="System_Scripts\Camera.h" />
+    <ClInclude Include="System_Scripts\DataFuncs.h" />
     <ClInclude Include="System_Scripts\Event.h" />
     <ClInclude Include="System_Scripts\Event_Manager.h" />
+    <ClInclude Include="System_Scripts\helpers.h" />
     <ClInclude Include="System_Scripts\Runtime_Script.h" />
     <ClInclude Include="System_Scripts\Shader.h" />
     <ClInclude Include="System_Scripts\System_Manager.h" />
