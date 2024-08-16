@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="Assets\Game_Scripts\CameraMovement.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="System_Scripts\DataFuncs.cpp" />
     <ClCompile Include="System_Scripts\Event.cpp" />
     <ClCompile Include="System_Scripts\Event_Manager.cpp" />
     <ClCompile Include="System_Scripts\Main.cpp" />

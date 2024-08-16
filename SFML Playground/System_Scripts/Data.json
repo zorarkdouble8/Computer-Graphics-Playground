@@ -1,8 +1,33 @@
 {
     "Windows": [
-        {"Classname": {
-            "test": true,
-            "yoMama": false
-        }}
+        {"NameId": "Test",
+         "State": {
+            "IsCreated": null,
+            "Show": false
+         },
+         "Settings": {
+            "Title": "Testing",
+            "Size": [100, 100]
+         },
+         "RenderComponents": [
+            {"LayerId": 0,
+            "Position": {
+                "Coordinates": [50, 50]
+            },
+            "Shape": {
+                "Text": {"SText": "Success!"}
+            }}
+        ]},
+        {"NameId": "Debug",
+         "State": {
+            "IsCreated": null,
+            "Show": true
+         },
+         "Settings": {
+            "Title": "Debug",
+            "Size": [100, 100]
+         },
+         "RenderComponents": []
+        }
     ]
 }

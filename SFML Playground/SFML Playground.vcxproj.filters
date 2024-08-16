@@ -112,5 +112,6 @@
     <ClCompile Include="System_Scripts\Tests\System_Tests.cpp">
       <Filter>Tests\System_Tests</Filter>
     </ClCompile>
+    <ClCompile Include="System_Scripts\DataFuncs.cpp" />
   </ItemGroup>
 </Project>

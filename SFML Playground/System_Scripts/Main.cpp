@@ -48,6 +48,7 @@
 #include "../Assets/Game_Scripts/TestGameScript.h"
 #include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
 #include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
+#include "DataFuncs.h"
 
 //----Windows Window classes----
 #include <WinUser.h>
@@ -285,6 +286,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         return -1;
     }
 
+    //Create all windows
+    vector<nlohmann::json> windows = data.at("Windows");
+    for (auto w = windows.begin(); w != windows.end(); w++)
+    {
+        Window::CreateAExistingWindow(data, w->at("NameId"));
+    }
+
+    
+
+
     //Create a window!
     string className = "My windows class";
     WNDCLASSEX window = { 0 }; //Add onto this when you want to add a Icon
@@ -326,7 +337,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
 
     //Get messages and distribute them to windows
     MSG msgInfo;
-    while(GetMessage(&msgInfo, windowHandle, 0, 0) >= 0)
+    while(GetMessage(&msgInfo, NULL, 0, 0) >= 0)
     {
         TranslateMessage(&msgInfo);
         DispatchMessage(&msgInfo);
