@@ -32,8 +32,24 @@ struct Generic
 
 struct WindowData
 {
+	//Creates a window handle (starting from a window entity)
+	static json CreateWindowHandle(const json& windowData, const string& windowName)
+	{
+		//Creates a window handle and puts the value in the .json file
+		json newData;
+		json windArray;
+		windArray.emplace("Handle", 34);
+		json windArray1;
+		windArray1.emplace("State", windArray);
+		json windArray2;
+		windArray2.emplace(windowName, windArray1);
+		newData.emplace("Windows", windArray2);
 
+		string test = newData.dump();
+		return newData;
+	}
 };
+
 
 struct Window
 {

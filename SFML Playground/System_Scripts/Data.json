@@ -1,33 +1,33 @@
 {
-    "Windows": [
-        {"NameId": "Test",
+    "Windows": {
+        "Test": {
          "State": {
-            "IsCreated": null,
+            "Handle": null,
             "Show": false
          },
          "Settings": {
             "Title": "Testing",
             "Size": [100, 100]
          },
-         "RenderComponents": [
-            {"LayerId": 0,
+         "RenderComponents": {
+            "0": {
             "Position": {
                 "Coordinates": [50, 50]
             },
             "Shape": {
                 "Text": {"SText": "Success!"}
-            }}
-        ]},
-        {"NameId": "Debug",
+            }}}
+        },
+        "Debug": {
          "State": {
-            "IsCreated": null,
+            "Handle": null,
             "Show": true
          },
          "Settings": {
             "Title": "Debug",
             "Size": [100, 100]
          },
-         "RenderComponents": []
+         "RenderComponents": {}
         }
-    ]
+    }
 }

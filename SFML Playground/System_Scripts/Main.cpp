@@ -42,6 +42,7 @@
 #include "Event.h"
 #include "System_Manager.h"
 #include "helpers.h"
+#include "State.h"
 
 //#include "../Assets/Game_Scripts/Playground.h"
 #include "../Assets/Game_Scripts/CameraMovement.h"
@@ -278,21 +279,17 @@ nlohmann::json RetrieveSavedData(bool& isSuccessful)
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
 {
-    //get settings
-    bool isSuccessful = false;
-    nlohmann::json data = RetrieveSavedData(isSuccessful);
-    if (!isSuccessful)
-    {
-        return -1;
-    }
+    SystemState* state = SystemState::getInstance();
 
     //Create all windows
-    vector<nlohmann::json> windows = data.at("Windows");
-    for (auto w = windows.begin(); w != windows.end(); w++)
+    nlohmann::json rootData = state->getCurrentState();
+    nlohmann::json windows = rootData.at("Windows");
+    for (auto w = windows.items().begin(); w != windows.items().end(); w++)
     {
-        Window::CreateAExistingWindow(data, w->at("NameId"));
+         state->commitState(WindowData::CreateWindowHandle(rootData, w.key()));
     }
 
+    state->pushToNextState();
     
 
 
@@ -323,7 +320,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
     }
 
     //Create the window
-    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &data);
+    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &rootData);
     if (windowHandle == NULL)
     {
         system("PAUSE");
