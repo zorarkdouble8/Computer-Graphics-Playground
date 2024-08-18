@@ -1,5 +1,6 @@
 #pragma once
 #include <tuple>
+#include "helpers.h"
 #include "../Libraries/JSON/nlohmann/json.hpp"
 
 using namespace nlohmann;
@@ -30,15 +31,16 @@ struct Generic
 	}
 };
 
-struct WindowData
+class WindowData
 {
+public:
 	//Creates a window handle (starting from a window entity)
-	static json CreateWindowHandle(const json& windowData, const string& windowName)
+	static json AddWindowHandle(const json& windowData, const string& windowName, HWND windowHandle)
 	{
 		//Creates a window handle and puts the value in the .json file
 		json newData;
 		json windArray;
-		windArray.emplace("Handle", 34);
+		windArray.emplace("Handle", (int) windowHandle);
 		json windArray1;
 		windArray1.emplace("State", windArray);
 		json windArray2;
@@ -48,6 +50,10 @@ struct WindowData
 		string test = newData.dump();
 		return newData;
 	}
+	//TODO ^ change this to add window handle with parameter handle
+
+private:
+
 };
 
 

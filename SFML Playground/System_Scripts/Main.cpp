@@ -277,24 +277,10 @@ nlohmann::json RetrieveSavedData(bool& isSuccessful)
     return data;
 }
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
+//Creates and returns a window handle
+HWND CreateWindowHandle(HINSTANCE hInstance, nlohmann::json& rootData, const string& windowName)
 {
-    SystemState* state = SystemState::getInstance();
-
-    //Create all windows
-    nlohmann::json rootData = state->getCurrentState();
-    nlohmann::json windows = rootData.at("Windows");
-    for (auto w = windows.items().begin(); w != windows.items().end(); w++)
-    {
-         state->commitState(WindowData::CreateWindowHandle(rootData, w.key()));
-    }
-
-    state->pushToNextState();
-    
-
-
     //Create a window!
-    string className = "My windows class";
     WNDCLASSEX window = { 0 }; //Add onto this when you want to add a Icon
     window.cbSize = sizeof(WNDCLASSEX);
     window.style = 0;
@@ -306,9 +292,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
     window.hCursor = NULL;
     window.hbrBackground = NULL;
     window.lpszMenuName = NULL;
-    window.lpszClassName = L"Main";
+    window.lpszClassName = stringToLPCWSTR(windowName);
     window.hIconSm = NULL;
-    
+
     //Register window to the operating system
     ATOM windowId = RegisterClassEx(&window);
     if (windowId == 0)
@@ -316,21 +302,48 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
         //use https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499- to determine errors meaning
         cout << "ERROR occurred when registering window" << endl;
         DWORD error = GetLastError();
-        return -1;
+        //return -1;
     }
 
     //Create the window
-    HWND windowHandle = CreateWindowEx(0, L"Main", L"Testing Window", WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &rootData);
+    HWND windowHandle = CreateWindowEx(0, stringToLPCWSTR(windowName), stringToLPCWSTR(windowName), WS_OVERLAPPEDWINDOW, 100, 100, 500, 500, NULL, NULL, hInstance, &rootData);
     if (windowHandle == NULL)
     {
         system("PAUSE");
         cout << "ERROR occurred when making window" << endl;
         DWORD error = GetLastError();
-        return -1;
+        //return -1;
     }
 
-    //Command the window to show
-    ShowWindow(windowHandle, SW_SHOW);
+    return windowHandle;
+}
+
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int nShowCmd)
+{
+    SystemState* state = SystemState::getInstance();
+
+    //Create all windows
+    nlohmann::json rootData = state->getCurrentState();
+    nlohmann::json windows = rootData.at("Windows");
+    for (auto w = windows.items().begin(); w != windows.items().end(); w++)
+    {
+        HWND handle = CreateWindowHandle(hInstance, rootData, w.key());
+       
+        state->commitState(WindowData::AddWindowHandle(rootData, w.key(), handle));
+    }
+
+    state->pushToNextState();
+    rootData = state->getCurrentState();
+
+    string data = state->getCurrentState().dump();
+    for (auto w = windows.items().begin(); w != windows.items().end(); w++)
+    {
+        int test = rootData.at("Windows").at(w.key()).at("State").at("Handle");
+        HWND handle = (HWND) (test);
+
+        //Command the window to show
+        ShowWindow(handle, SW_SHOW);
+    }
 
     //Get messages and distribute them to windows
     MSG msgInfo;

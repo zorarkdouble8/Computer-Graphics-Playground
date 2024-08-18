@@ -7,8 +7,6 @@ using namespace nlohmann;
 class SystemState
 {
 public:
-	
-
 	static SystemState* getInstance()
 	{
 		if (_instance == nullptr)
@@ -35,7 +33,7 @@ public:
 	void pushToNextState()
 	{
 		currentState.merge_patch(nextState);
-
+		string test = currentState.dump();
 		nextState.clear();
 	}
 
