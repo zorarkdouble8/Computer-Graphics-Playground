@@ -147,6 +147,7 @@
     <ClInclude Include="System_Scripts\helpers.h" />
     <ClInclude Include="System_Scripts\Runtime_Script.h" />
     <ClInclude Include="System_Scripts\Shader.h" />
+    <ClInclude Include="System_Scripts\State.h" />
     <ClInclude Include="System_Scripts\System_Manager.h" />
   </ItemGroup>
   <ItemGroup>

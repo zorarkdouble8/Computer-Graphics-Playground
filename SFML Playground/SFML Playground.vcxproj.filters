@@ -82,6 +82,9 @@
     <ClInclude Include="System_Scripts\helpers.h">
       <Filter>System_Scripts\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="System_Scripts\State.h">
+      <Filter>System_Scripts\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="System_Scripts\Tests\Test.cpp">

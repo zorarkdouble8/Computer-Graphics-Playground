@@ -17,17 +17,6 @@
             "Shape": {
                 "Text": {"SText": "Success!"}
             }}}
-        },
-        "Debug": {
-         "State": {
-            "Handle": null,
-            "Show": true
-         },
-         "Settings": {
-            "Title": "Debug",
-            "Size": [100, 100]
-         },
-         "RenderComponents": {}
         }
     }
 }
