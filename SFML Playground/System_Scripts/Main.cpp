@@ -138,9 +138,9 @@ void EnableDebugLayer()
     }
 }
 
-ComPtr<IDXGIFactory1> CreateFactory()
+ComPtr<IDXGIFactory2> CreateFactory()
 {
-    ComPtr<IDXGIFactory1> GIFactory;
+    ComPtr<IDXGIFactory2> GIFactory;
     DXThrowIfFail(CreateDXGIFactory1(IID_PPV_ARGS(&GIFactory)));
     cout << "Created the Factory successfully" << endl;
 
@@ -148,7 +148,7 @@ ComPtr<IDXGIFactory1> CreateFactory()
 }
 
 //Creates a DXGI Factory
-ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory1> GIFactory, bool createWARP = false)
+ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory2> GIFactory, bool createWARP = false)
 {
     //TODO: Option to creat warp adapter (use method CreateWarpAdapter)
     ComPtr<IDXGIAdapter> adapter;
@@ -195,36 +195,32 @@ ComPtr<ID3D12CommandQueue> CreateCommandQueue(ComPtr<ID3D12Device> device)
     return cmdQueue;
 }
 
-ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory1> factory, ComPtr<ID3D12CommandQueue> cmdQueue)
+ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory2> factory, ComPtr<ID3D12CommandQueue> cmdQueue, HWND windowHandle)
 {
-    DXGI_SWAP_CHAIN_DESC swapChainDesc;
+    DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
+
+    //Used to specify the flip model for swap chains (Directx12 HAS to use this)
+    DXGI_SAMPLE_DESC flipModelDesc = { 0 };
+    flipModelDesc.Count = 1;
+    flipModelDesc.Quality = 0;
 
     //Creating the swapChainDesc!!!
-    swapChainDesc.BufferDesc.Width = 0;
-    swapChainDesc.BufferDesc.Height = 0;
-    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_UNKNOWN;
-    swapChainDesc.BufferCount = 1;
-    swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER;
-    swapChainDesc.BufferCount = 1;
-    swapChainDesc.OutputWindow; //TODO, add handle to output!
-    swapChainDesc.Windowed = false;
+    swapChainDesc.SampleDesc = flipModelDesc;
+    swapChainDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    swapChainDesc.Stereo = false;
+    swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    swapChainDesc.BufferCount = 2;
+    swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
-    //
-    //-----------------------------
-    ComPtr<IDXGISwapChain> swapChain;
-    DXThrowIfFail(factory->CreateSwapChain(cmdQueue.Get(), &swapChainDesc, &swapChain));
+    //I would like DXGI_ALPHA_MODE_STRAIGHT to represent that alpha is color transparency, but it gives a error. 
+    //It might have to do with the format or a DirectX12 thing
+    swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE; 
+    
+    //create the actual swap chain
+    ComPtr<IDXGISwapChain1> swapChain;
+    DXThrowIfFail(factory->CreateSwapChainForHwnd(cmdQueue.Get(), windowHandle, &swapChainDesc, NULL, NULL, &swapChain));
 
     return swapChain;
-}
-
-struct Test
-{
-    bool test = false;
-};
-
-void initializeDirectX()
-{
-
 }
 
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
@@ -248,15 +244,17 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
            EnableDebugLayer();
 
            //Create the device
-           ComPtr<IDXGIFactory1> GIFactory = CreateFactory();
+           ComPtr<IDXGIFactory2> GIFactory = CreateFactory();
            ComPtr<ID3D12Device3> device = CreateDevice(GIFactory);
            cout << "Created the Device successfully" << endl;
 
            //Create the command queue
            ComPtr<ID3D12CommandQueue> cmdQueue = CreateCommandQueue(device);
+           cout << "Created the Command Queue successfully" << endl;
 
            //create the swap chain
-           //ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue);
+           ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue, hwnd);
+           cout << "Created the Swap Chain successfully" << endl;
 
            //Create a render target view(RTV) descriptor heap
            //Create frame resources
