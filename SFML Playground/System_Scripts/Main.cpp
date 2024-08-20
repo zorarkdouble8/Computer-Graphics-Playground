@@ -64,11 +64,15 @@
 
 using namespace Microsoft::WRL;
 
+//----Direct X Helper Structures----
+#include <d3dx12.h>
+#include <d3dx12_root_signature.h>
 //----Direct X----
 #include <d3d12sdklayers.h> //To get debug layer
 #include <d3d12.h> //For general API
 #include <dxgi.h> //For DXGI objects
 #include <dxgi1_2.h> //For display modes
+
 
 using namespace std;
 
@@ -223,6 +227,45 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory2> factory, ComPtr<ID3
     return swapChain;
 }
 
+ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(ComPtr<ID3D12Device> device)
+{
+    D3D12_DESCRIPTOR_HEAP_DESC heapDesc = { };
+    heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+    heapDesc.NumDescriptors = 1;
+
+    ComPtr<ID3D12DescriptorHeap> descHeap;
+    DXThrowIfFail(device->CreateDescriptorHeap(&heapDesc, IID_PPV_ARGS(&descHeap)));
+
+    return descHeap;
+}
+
+ComPtr<ID3D12Resource> CreateRenderTargetView(ComPtr<ID3D12Device> device, ComPtr<ID3D12DescriptorHeap> descHeap, ComPtr<IDXGISwapChain> swapChain)
+{
+    ComPtr<ID3D12Resource> renderResource;
+    DXThrowIfFail(swapChain->GetBuffer(0, IID_PPV_ARGS(&renderResource)));
+
+    D3D12_CPU_DESCRIPTOR_HANDLE descHandle = descHeap->GetCPUDescriptorHandleForHeapStart();
+
+    device->CreateRenderTargetView(renderResource.Get(), NULL, descHandle);
+
+    return renderResource;
+}
+
+ComPtr<ID3D12CommandAllocator> CreateCommandAllocator(ComPtr<ID3D12Device> device)
+{
+    ComPtr<ID3D12CommandAllocator> commandAllocator;
+    
+    //cout << hex << device->GetDeviceRemovedReason() << endl;
+    DXThrowIfFail(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)));
+    
+    return commandAllocator;
+}
+
+void CreateRootSignature()
+{
+    CD3DX12_ROOT_SIGNATURE_DESC rootDesc(0, NULL, 0);
+}
+
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -255,10 +298,24 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
            //create the swap chain
            ComPtr<IDXGISwapChain> swapChain = CreateSwapChain(GIFactory, cmdQueue, hwnd);
            cout << "Created the Swap Chain successfully" << endl;
-
+           //IDXGISwapChain3::GetCurrentBackBufferIndex?
+           
            //Create a render target view(RTV) descriptor heap
-           //Create frame resources
+           ComPtr<ID3D12DescriptorHeap> descHeap = CreateDescriptorHeap(device);
+           cout << "Created the Descriptor Heap" << endl;
+           //ID3D12Device::GetDescriptorHandleIncreme?
+           
+           //Create frame resources (AKA a render target view)
+           ComPtr<ID3D12Resource> renderResource = CreateRenderTargetView(device, descHeap, swapChain);
+           cout << "Created a frame / view resrouce" << endl;
+
            //Create a command allocator
+           ComPtr<ID3D12CommandAllocator> commandAlloc = CreateCommandAllocator(device);
+           cout << "Created the command allocator" << endl;
+
+           //----Create the Pipeline state object (PSO)----
+           //Create root signature
+
 
             break;
         }
