@@ -72,7 +72,7 @@ using namespace Microsoft::WRL;
 #include <d3d12.h> //For general API
 #include <dxgi.h> //For DXGI objects
 #include <dxgi1_2.h> //For display modes
-
+#include <d3dcompiler.h> //For compiling HLSL code
 
 using namespace std;
 
@@ -110,13 +110,25 @@ public:
     }
 };
 
-void DXThrowIfFail(HRESULT result, bool printException = true)
+void DXThrowIfFail(HRESULT result, string errorInfo = "Failure to create a object!", bool printException = true)
 {
     //there are some unknown errors
     if (FAILED(result))
     {
         if (printException)
-            cout << "EXCEPTION: " << "Failure to create a object! " << "HRESULT CODE: " << "0x" << hex << (unsigned int) result << endl;
+            cout << "EXCEPTION: " << errorInfo << " HRESULT CODE: " << "0x" << hex << (unsigned int) result << endl;
+
+        throw runtime_error("");
+    }
+}
+
+void DXThrowIfFailBlob(HRESULT result, ComPtr<ID3DBlob> errorInfo, bool printException = true)
+{
+    //there are some unknown errors
+    if (FAILED(result))
+    {
+        if (printException)
+            cout << "EXCEPTION: " << (char*) errorInfo->GetBufferPointer() << " HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
 
         throw runtime_error("");
     }
@@ -163,7 +175,7 @@ ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory2> GIFactory, bool createW
     {
         try
         {
-            DXThrowIfFail(GIFactory->EnumAdapters(x, &adapter), false);
+            DXThrowIfFail(GIFactory->EnumAdapters(x, &adapter), "Don't care", false);
             DXGI_ADAPTER_DESC adapterDesc;
             adapter->GetDesc(&adapterDesc);
             wcout << "ID: " << x << " " << adapterDesc.Description << endl;
@@ -261,9 +273,43 @@ ComPtr<ID3D12CommandAllocator> CreateCommandAllocator(ComPtr<ID3D12Device> devic
     return commandAllocator;
 }
 
-void CreateRootSignature()
+ComPtr<ID3D12RootSignature> CreateRootSignature(ComPtr<ID3D12Device> device)
 {
-    CD3DX12_ROOT_SIGNATURE_DESC rootDesc(0, NULL, 0);
+    CD3DX12_ROOT_SIGNATURE_DESC rootDesc(0, NULL, 0, NULL, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+    ComPtr<ID3DBlob> serializedRoot;
+    ComPtr<ID3DBlob> errorInfo;
+    HRESULT result = D3D12SerializeRootSignature(&rootDesc, D3D_ROOT_SIGNATURE_VERSION_1, &serializedRoot, &errorInfo);
+    DXThrowIfFailBlob(result, errorInfo);
+
+    ComPtr<ID3D12RootSignature> rootSignature;  
+    DXThrowIfFail(device->CreateRootSignature(0, serializedRoot->GetBufferPointer(), serializedRoot->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
+    return rootSignature;
+}
+
+ComPtr<ID3DBlob> CompileHLSLShader(string filePath, string shaderType, string entryPoint)
+{
+    ComPtr<ID3DBlob> shader;
+    ComPtr<ID3DBlob> shaderErrorInfo;
+
+    HRESULT result = D3DCompileFromFile(stringToLPCWSTR(filePath), NULL, NULL, entryPoint.c_str(), shaderType.c_str(), D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &shader, &shaderErrorInfo);
+    DXThrowIfFailBlob(result, shaderErrorInfo);
+
+    return shader;
+}
+
+ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<ID3D12RootSignature> rootSignature, ComPtr<ID3DBlob> vertexShader, ComPtr<ID3DBlob> fragShader)
+{
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc;
+    pipelineDesc.pRootSignature = rootSignature.Get();
+    pipelineDesc.VS = { vertexShader->GetBufferPointer(), vertexShader->GetBufferSize() };
+    pipelineDesc.PS = { fragShader->GetBufferPointer(), vertexShader->GetBufferSize() };
+
+    CD3DX12_RASTERIZER_DESC rasterizeDesc(D3D12_DEFAULT);
+    CD3DX12_BLEND_DESC blendDesc(D3D12_DEFAULT);
+
+    pipelineDesc.RasterizerState = rasterizeDesc;
+    pipelineDesc.BlendState = blendDesc;
 }
 
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
@@ -315,6 +361,13 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
            //----Create the Pipeline state object (PSO)----
            //Create root signature
+           ComPtr<ID3D12RootSignature> rootSignature = CreateRootSignature(device);
+           cout << "Created the root signature" << endl;
+
+           //Compile shaders
+           ComPtr<ID3DBlob> vertexShader = CompileHLSLShader("C:\\Users\\User404\\Desktop\\SFML and OpenGl Playgrond\\SFML Playground\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "vs_5_0", "VertexStart");
+           ComPtr<ID3DBlob> fragShader = CompileHLSLShader("C:\\Users\\User404\\Desktop\\SFML and OpenGl Playgrond\\SFML Playground\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "ps_5_0", "FragStart");
+           cout << "Shaders are created" << endl;
 
 
             break;
