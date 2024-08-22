@@ -300,7 +300,7 @@ ComPtr<ID3DBlob> CompileHLSLShader(string filePath, string shaderType, string en
 
 ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<ID3D12RootSignature> rootSignature, ComPtr<ID3DBlob> vertexShader, ComPtr<ID3DBlob> fragShader)
 {
-    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc;
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = { };
     pipelineDesc.pRootSignature = rootSignature.Get();
     pipelineDesc.VS = { vertexShader->GetBufferPointer(), vertexShader->GetBufferSize() };
     pipelineDesc.PS = { fragShader->GetBufferPointer(), vertexShader->GetBufferSize() };
@@ -310,6 +310,19 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
 
     pipelineDesc.RasterizerState = rasterizeDesc;
     pipelineDesc.BlendState = blendDesc;
+
+    //Setting render pipeline input
+    D3D12_INPUT_ELEMENT_DESC inElement = { };
+    inElement.SemanticName = "POSITION";
+    inElement.SemanticIndex = 0;
+    inElement.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+
+    D3D12_INPUT_LAYOUT_DESC inLayout = { };
+    inLayout.NumElements = 2;
+    inLayout.pInputElementDescs = {inElement, //put color element herer};
+
+    pipelineDesc.InputLayout = inLayout;
+    pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 }
 
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)

@@ -1,8 +1,8 @@
 //Use includes = error!
 struct Vertex
 {
-    float4 position;
-    float4 color;
+    float4 position: POSITION;
+    float4 color: COLOR;
 };
 
 Vertex VertexStart(float4 pos: POSITION, float4 color: COLOR): Vertex
