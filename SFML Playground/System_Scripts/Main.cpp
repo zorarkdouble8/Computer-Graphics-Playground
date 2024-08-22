@@ -312,14 +312,23 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     pipelineDesc.BlendState = blendDesc;
 
     //Setting render pipeline input
-    D3D12_INPUT_ELEMENT_DESC inElement = { };
-    inElement.SemanticName = "POSITION";
-    inElement.SemanticIndex = 0;
-    inElement.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    D3D12_INPUT_ELEMENT_DESC inPosEle = { };
+    inPosEle.SemanticName = "POSITION";
+    inPosEle.SemanticIndex = 0;
+    inPosEle.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+    inPosEle.InstanceDataStepRate = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+
+    D3D12_INPUT_ELEMENT_DESC inColEle = { };
+    inPosEle.SemanticName = "COLOR";
+    inPosEle.SemanticIndex = 0;
+    inPosEle.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    inPosEle.InstanceDataStepRate = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+
+    D3D12_INPUT_ELEMENT_DESC elementDesc[] = { inColEle, inPosEle };
 
     D3D12_INPUT_LAYOUT_DESC inLayout = { };
     inLayout.NumElements = 2;
-    inLayout.pInputElementDescs = {inElement, //put color element herer};
+    inLayout.pInputElementDescs = elementDesc;
 
     pipelineDesc.InputLayout = inLayout;
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
