@@ -61,6 +61,7 @@
 
 //----Modern Windows API----
 #include <wrl.h>
+#include <comdef.h> //for converting hresults to strings
 
 using namespace Microsoft::WRL;
 
@@ -110,29 +111,41 @@ public:
     }
 };
 
-void DXThrowIfFail(HRESULT result, string errorInfo = "Failure to create a object!", bool printException = true)
+void DXThrowIfFail(HRESULT result, string errorInfo = "Failure to create a object!", ComPtr<ID3DBlob> errorBlob = nullptr, bool printException = true)
 {
     //there are some unknown errors
     if (FAILED(result))
     {
-        if (printException)
-            cout << "EXCEPTION: " << errorInfo << " HRESULT CODE: " << "0x" << hex << (unsigned int) result << endl;
+        _com_error error(result);
 
+        if (printException && errorBlob != nullptr)
+        {
+            cout << "EXCEPTION: " << (char*)errorBlob->GetBufferPointer() << endl;
+            cout << "HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
+            wcout << "HRESULT description: " << error.ErrorMessage() << endl;
+        }
+        else if (printException)
+        {
+            cout << "EXCEPTION: " << errorInfo << endl;
+            cout << "HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
+            wcout << "HRESULT description: " << error.ErrorMessage() << endl;
+        }
+            
         throw runtime_error("");
     }
 }
 
-void DXThrowIfFailBlob(HRESULT result, ComPtr<ID3DBlob> errorInfo, bool printException = true)
-{
-    //there are some unknown errors
-    if (FAILED(result))
-    {
-        if (printException)
-            cout << "EXCEPTION: " << (char*) errorInfo->GetBufferPointer() << " HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
-
-        throw runtime_error("");
-    }
-}
+//void DXThrowIfFailBlob(HRESULT result, ComPtr<ID3DBlob> errorInfo, bool printException = true)
+//{
+//    //there are some unknown errors
+//    if (FAILED(result))
+//    {
+//        if (printException)
+//            cout << "EXCEPTION: " << (char*) errorInfo->GetBufferPointer() << " HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
+//
+//        throw runtime_error("");
+//    }
+//}
 
 //This enables the debug layer inside DirectX
 void EnableDebugLayer()
@@ -175,7 +188,7 @@ ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory2> GIFactory, bool createW
     {
         try
         {
-            DXThrowIfFail(GIFactory->EnumAdapters(x, &adapter), "Don't care", false);
+            DXThrowIfFail(GIFactory->EnumAdapters(x, &adapter), "Don't care", nullptr, false);
             DXGI_ADAPTER_DESC adapterDesc;
             adapter->GetDesc(&adapterDesc);
             wcout << "ID: " << x << " " << adapterDesc.Description << endl;
@@ -280,7 +293,7 @@ ComPtr<ID3D12RootSignature> CreateRootSignature(ComPtr<ID3D12Device> device)
     ComPtr<ID3DBlob> serializedRoot;
     ComPtr<ID3DBlob> errorInfo;
     HRESULT result = D3D12SerializeRootSignature(&rootDesc, D3D_ROOT_SIGNATURE_VERSION_1, &serializedRoot, &errorInfo);
-    DXThrowIfFailBlob(result, errorInfo);
+    DXThrowIfFail(result, "Failed to create root signature", errorInfo);
 
     ComPtr<ID3D12RootSignature> rootSignature;  
     DXThrowIfFail(device->CreateRootSignature(0, serializedRoot->GetBufferPointer(), serializedRoot->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
@@ -293,7 +306,7 @@ ComPtr<ID3DBlob> CompileHLSLShader(string filePath, string shaderType, string en
     ComPtr<ID3DBlob> shaderErrorInfo;
 
     HRESULT result = D3DCompileFromFile(stringToLPCWSTR(filePath), NULL, NULL, entryPoint.c_str(), shaderType.c_str(), D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &shader, &shaderErrorInfo);
-    DXThrowIfFailBlob(result, shaderErrorInfo);
+    DXThrowIfFail(result, "Failed to create shader: " + filePath, shaderErrorInfo);
 
     return shader;
 }
@@ -305,6 +318,7 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     pipelineDesc.VS = { vertexShader->GetBufferPointer(), vertexShader->GetBufferSize() };
     pipelineDesc.PS = { fragShader->GetBufferPointer(), vertexShader->GetBufferSize() };
 
+    //Setting Rasterizer and blend states
     CD3DX12_RASTERIZER_DESC rasterizeDesc(D3D12_DEFAULT);
     CD3DX12_BLEND_DESC blendDesc(D3D12_DEFAULT);
 
@@ -331,7 +345,18 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     inLayout.pInputElementDescs = elementDesc;
 
     pipelineDesc.InputLayout = inLayout;
+
+    //Other settings
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+    pipelineDesc.NumRenderTargets = 1;
+    pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_TOOL_DEBUG;
+
+    //Creating pipeline
+    ComPtr<ID3D12PipelineState> pipeline;
+    DXThrowIfFail(device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipeline)), "Failed to create pipeline");
+
+    return pipeline;
 }
 
 //This get's called to initialize window or other things (https://learn.microsoft.com/en-us/windows/win32/winmsg/using-window-procedures)
