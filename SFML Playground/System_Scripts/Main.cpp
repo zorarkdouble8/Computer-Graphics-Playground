@@ -305,8 +305,8 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
 {
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = { };
     pipelineDesc.pRootSignature = rootSignature.Get();
-    pipelineDesc.VS = { vertexShader->GetBufferPointer(), vertexShader->GetBufferSize() };
-    pipelineDesc.PS = { fragShader->GetBufferPointer(), vertexShader->GetBufferSize() };
+    pipelineDesc.VS = { reinterpret_cast<UINT8*>(vertexShader->GetBufferPointer()), vertexShader->GetBufferSize() };
+    pipelineDesc.PS = { reinterpret_cast<UINT8*>(fragShader->GetBufferPointer()), vertexShader->GetBufferSize() };
 
     //Setting Rasterizer and blend states
     CD3DX12_RASTERIZER_DESC rasterizeDesc(D3D12_DEFAULT);
@@ -341,6 +341,9 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     pipelineDesc.NumRenderTargets = 1;
     pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
     pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_TOOL_DEBUG;
+
+    pipelineDesc.SampleMask = UINT_MAX; //<- what does this do?
+    pipelineDesc.SampleDesc.Count = 1;
 
     //Creating pipeline
     ComPtr<ID3D12PipelineState> pipeline;
@@ -407,6 +410,9 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
            ComPtr<ID3DBlob> fragShader = CompileHLSLShader(sysManage->GetProjectDirectory() + "\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "ps_5_0", "FragStart");
            cout << "Shaders are created" << endl;
 
+           //Create pipeline
+           ComPtr<ID3D12PipelineState> pipeline = CreatePipeline(device, rootSignature, vertexShader, fragShader);
+           cout << "Created the pipeline!" << endl;
 
             break;
         }
