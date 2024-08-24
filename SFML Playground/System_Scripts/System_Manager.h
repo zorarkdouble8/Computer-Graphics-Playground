@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 #include <glad/glad.h>
 #include<SFML/Graphics.hpp>
@@ -46,6 +47,11 @@ public:
 		return this->mainWindow; 
 	}
 
+	std::string GetProjectDirectory()
+	{
+		return this->fileDir;
+	}
+
 	//Event Functions
 	void AddGameScript(Observer<>* gameRuntimeScript) { this->gameScripts.AddObserver(gameRuntimeScript); }
 	void AddSystemScript(Observer<>* sysRuntimeScript) { this->systemScripts.AddObserver(sysRuntimeScript); }
@@ -56,15 +62,20 @@ public:
 	static void DeleteInstance() { delete _instance; }
 
 private:
+	std::string fileDir = __FILE__;
+	SystemManager()
+	{
+		//trim fileDir to project path
+		fileDir = fileDir.erase(fileDir.find_last_of("\\"));
+		fileDir = fileDir.erase(fileDir.find_last_of("\\"));
+	}
+	
 	sf::Window* mainWindow;
-
 	static SystemManager* _instance;
 
 	//Event Variables
 	static Event<> systemScripts;
 	static Event<> gameScripts;
-
-	SystemManager() {};
 
 	//causes loop so don't use
 	~SystemManager() {};

@@ -48,8 +48,9 @@ private:
 
 	nlohmann::json RetrieveSavedData(bool& isSuccessful)
 	{
-		//PC: "C:\\Users\\User101\\Desktop\\SFML and OpenGL Playground\\SFML Playground\\System_Scripts\\Data.json"
-		ifstream json("C:\\Users\\User101\\Desktop\\SFML and OpenGL Playground\\SFML Playground\\System_Scripts\\Data.json");
+		SystemManager* sysManage = SystemManager::GetInstance();
+
+		ifstream json(sysManage->GetProjectDirectory() + "\\System_Scripts\\Data.json");
 		nlohmann::json data;
 		try
 		{

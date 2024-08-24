@@ -16,6 +16,6 @@ Event<> SystemManager::gameScripts;
 void SystemManager::PrintSystemInfomation()
 {
 	std::cout << "---- System Infomation ----" << std::endl;
-	std::cout << "Version of GL: " << glGetString(GL_VERSION) << std::endl;
+	//std::cout << "Version of GL: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << std::setw(28) << std::setfill('-') << "" << std::endl;
 }

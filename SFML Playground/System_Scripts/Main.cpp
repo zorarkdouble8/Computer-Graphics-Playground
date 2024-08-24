@@ -75,6 +75,8 @@ using namespace Microsoft::WRL;
 #include <dxgi1_2.h> //For display modes
 #include <d3dcompiler.h> //For compiling HLSL code
 
+const string fileDir = __FILE__;
+
 using namespace std;
 
 
@@ -134,18 +136,6 @@ void DXThrowIfFail(HRESULT result, string errorInfo = "Failure to create a objec
         throw runtime_error("");
     }
 }
-
-//void DXThrowIfFailBlob(HRESULT result, ComPtr<ID3DBlob> errorInfo, bool printException = true)
-//{
-//    //there are some unknown errors
-//    if (FAILED(result))
-//    {
-//        if (printException)
-//            cout << "EXCEPTION: " << (char*) errorInfo->GetBufferPointer() << " HRESULT CODE: " << "0x" << hex << (unsigned int)result << endl;
-//
-//        throw runtime_error("");
-//    }
-//}
 
 //This enables the debug layer inside DirectX
 void EnableDebugLayer()
@@ -412,8 +402,9 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
            cout << "Created the root signature" << endl;
 
            //Compile shaders
-           ComPtr<ID3DBlob> vertexShader = CompileHLSLShader("C:\\Users\\User404\\Desktop\\SFML and OpenGl Playgrond\\SFML Playground\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "vs_5_0", "VertexStart");
-           ComPtr<ID3DBlob> fragShader = CompileHLSLShader("C:\\Users\\User404\\Desktop\\SFML and OpenGl Playgrond\\SFML Playground\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "ps_5_0", "FragStart");
+           SystemManager* sysManage = SystemManager::GetInstance();
+           ComPtr<ID3DBlob> vertexShader = CompileHLSLShader(sysManage->GetProjectDirectory() + "\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "vs_5_0", "VertexStart");
+           ComPtr<ID3DBlob> fragShader = CompileHLSLShader(sysManage->GetProjectDirectory() + "\\Assets\\Shaders\\HLSL\\vertexSh.hlsl", "ps_5_0", "FragStart");
            cout << "Shaders are created" << endl;
 
 
@@ -496,6 +487,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE noUse, PWSTR lpCmdLine, int n
 {
     AllocConsole();
     BindCrtHandlesToStdHandles(true, true, true);
+
+    //Initialize the system
+    SystemManager* sysManager = SystemManager::GetInstance();
+    sysManager->PrintSystemInfomation();    
 
     SystemState* state = SystemState::getInstance();
 
