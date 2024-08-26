@@ -3,8 +3,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <glad/glad.h>
-
 #include "Event.h"
 #include "System_Manager.h"
 

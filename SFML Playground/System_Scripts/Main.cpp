@@ -32,32 +32,12 @@
 #include <io.h>
 #include <fcntl.h>
 
-#include <glad/glad.h>
-#include <SFML/OpenGL.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../Libraries/Image_Loader/stb_image.h"
-#include "../Libraries/JSON/nlohmann/json.hpp"
-
-#include "Shader.h"
-#include "Event.h"
-#include "System_Manager.h"
-#include "helpers.h"
-#include "State.h"
-
-//#include "../Assets/Game_Scripts/Playground.h"
-#include "../Assets/Game_Scripts/CameraMovement.h"
-#include "../Assets/Game_Scripts/TestGameScript.h"
-#include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
-#include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
-#include "DataFuncs.h"
 
 //----Windows Window classes----
-#include <WinUser.h>
 #include <Windows.h>
 #include <WinBase.h> //for the entry point
+#include <WinUser.h>
 
 //----Modern Windows API----
 #include <wrl.h>
@@ -75,7 +55,18 @@ using namespace Microsoft::WRL;
 #include <dxgi1_2.h> //For display modes
 #include <d3dcompiler.h> //For compiling HLSL code
 
-const string fileDir = __FILE__;
+//----Created include files----
+#include "Event.h"
+#include "System_Manager.h"
+#include "helpers.h"
+#include "State.h"
+
+//#include "../Assets/Game_Scripts/Playground.h"
+//#include "../Assets/Game_Scripts/CameraMovement.h"
+#include "../Assets/Game_Scripts/TestGameScript.h"
+//#include "../Assets/Game_Scripts/Light_Scene/Light_Scene.h"
+#include "../Assets/Game_Scripts/DirectX/DirectXTest.h"
+#include "DataFuncs.h"
 
 using namespace std;
 

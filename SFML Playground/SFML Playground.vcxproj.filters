@@ -40,9 +40,6 @@
     <ClInclude Include="System_Scripts\Event.h">
       <Filter>System_Scripts\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="System_Scripts\Event_Manager.h">
-      <Filter>System_Scripts\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="System_Scripts\Runtime_Script.h">
       <Filter>System_Scripts\Headers</Filter>
     </ClInclude>
@@ -57,21 +54,6 @@
     </ClInclude>
     <ClInclude Include="System_Scripts\Camera.h">
       <Filter>A_Package\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Game_Scripts\CameraMovement.h">
-      <Filter>Assets\Game_Scripts\Playground</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Game_Scripts\Playground.h">
-      <Filter>Assets\Game_Scripts\Playground</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Game_Scripts\Shape_Infomation.h">
-      <Filter>Assets\Game_Scripts\Playground</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Light_Scene.h">
-      <Filter>Assets\Game_Scripts\Light_Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Shape_Infomation.h">
-      <Filter>Assets\Game_Scripts\Light_Scene</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Game_Scripts\DirectX\DirectXTest.h">
       <Filter>Assets\Game_Scripts</Filter>
@@ -93,25 +75,13 @@
     <ClCompile Include="System_Scripts\Event.cpp">
       <Filter>System_Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="System_Scripts\Event_Manager.cpp">
-      <Filter>System_Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="System_Scripts\Runtime_Script.cpp">
       <Filter>System_Scripts</Filter>
     </ClCompile>
     <ClCompile Include="System_Scripts\System_Manager.cpp">
       <Filter>System_Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>System_Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="System_Scripts\Main.cpp" />
-    <ClCompile Include="System_Scripts\Shader.cpp">
-      <Filter>A_Package</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Game_Scripts\CameraMovement.cpp">
-      <Filter>Assets\Game_Scripts\Playground</Filter>
-    </ClCompile>
     <ClCompile Include="System_Scripts\Tests\System_Tests.cpp">
       <Filter>Tests\System_Tests</Filter>
     </ClCompile>

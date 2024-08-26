@@ -4,9 +4,6 @@
 #include <iomanip>
 #include <string>
 
-#include <glad/glad.h>
-#include<SFML/Graphics.hpp>
-
 #include "Event.h"
 
 class SystemManager
@@ -35,7 +32,7 @@ public:
 	//Functions
 	void PrintSystemInfomation();
 
-	void SetMainWindow(sf::Window* mainWindow) { this->mainWindow = mainWindow; }
+	/*void SetMainWindow(sf::Window* mainWindow) { this->mainWindow = mainWindow; }
 	sf::Window* GetMainWindow() 
 	{ 
 		if (this->mainWindow == nullptr)
@@ -45,7 +42,7 @@ public:
 		}
 
 		return this->mainWindow; 
-	}
+	}*/
 
 	std::string GetProjectDirectory()
 	{
@@ -70,7 +67,7 @@ private:
 		fileDir = fileDir.erase(fileDir.find_last_of("\\"));
 	}
 	
-	sf::Window* mainWindow;
+	//sf::Window* mainWindow;
 	static SystemManager* _instance;
 
 	//Event Variables

@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;TESTMODE=0;DEBUGMODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\DirectX12_Helpers;$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\include;$(MSBuildProjectDirectory)\Libraries\glad\include;$(MSBuildProjectDirectory)\Libraries\glm_(mathematics library);$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include;$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Libraries\DirectX12_Helpers;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\include;$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Libraries\SFML-2.6.1\lib;$(MSBuildProjectDirectory)\Libraries\glad\src;$(MSBuildProjectDirectory)\Libraries\Visual_Leak_Detector\Win64;$(WindowsSDK_LibraryPath)\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies);D3d12.lib;dxgi.lib;D3DCompiler.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);D3d12.lib;dxgi.lib;D3DCompiler.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,17 +133,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\Game_Scripts\CameraMovement.h" />
     <ClInclude Include="Assets\Game_Scripts\DirectX\DirectXTest.h" />
-    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Light_Scene.h" />
-    <ClInclude Include="Assets\Game_Scripts\Light_Scene\Shape_Infomation.h" />
-    <ClInclude Include="Assets\Game_Scripts\Playground.h" />
-    <ClInclude Include="Assets\Game_Scripts\Shape_Infomation.h" />
     <ClInclude Include="Assets\Game_Scripts\TestGameScript.h" />
     <ClInclude Include="System_Scripts\Camera.h" />
     <ClInclude Include="System_Scripts\DataFuncs.h" />
     <ClInclude Include="System_Scripts\Event.h" />
-    <ClInclude Include="System_Scripts\Event_Manager.h" />
     <ClInclude Include="System_Scripts\helpers.h" />
     <ClInclude Include="System_Scripts\Runtime_Script.h" />
     <ClInclude Include="System_Scripts\Shader.h" />
@@ -151,14 +145,10 @@
     <ClInclude Include="System_Scripts\System_Manager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\Game_Scripts\CameraMovement.cpp" />
-    <ClCompile Include="glad.c" />
     <ClCompile Include="System_Scripts\DataFuncs.cpp" />
     <ClCompile Include="System_Scripts\Event.cpp" />
-    <ClCompile Include="System_Scripts\Event_Manager.cpp" />
     <ClCompile Include="System_Scripts\Main.cpp" />
     <ClCompile Include="System_Scripts\Runtime_Script.cpp" />
-    <ClCompile Include="System_Scripts\Shader.cpp" />
     <ClCompile Include="System_Scripts\System_Manager.cpp" />
     <ClCompile Include="System_Scripts\Tests\System_Tests.cpp" />
     <ClCompile Include="System_Scripts\Tests\Test.cpp" />
