@@ -196,7 +196,7 @@ ComPtr<ID3D12Device3> CreateDevice(ComPtr<IDXGIFactory2> GIFactory, bool createW
     DXThrowIfFail(GIFactory->EnumAdapters(0, &adapter));
 
     ComPtr<ID3D12Device3> device;
-    DXThrowIfFail(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&device)));
+    DXThrowIfFail(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_12_1, IID_PPV_ARGS(&device)));
     return device;
 }
 
@@ -225,7 +225,7 @@ ComPtr<IDXGISwapChain> CreateSwapChain(ComPtr<IDXGIFactory2> factory, ComPtr<ID3
 
     //Creating the swapChainDesc!!!
     swapChainDesc.SampleDesc = flipModelDesc;
-    swapChainDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swapChainDesc.Stereo = false;
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swapChainDesc.BufferCount = 2;
@@ -283,7 +283,7 @@ ComPtr<ID3D12RootSignature> CreateRootSignature(ComPtr<ID3D12Device> device)
     ComPtr<ID3DBlob> serializedRoot;
     ComPtr<ID3DBlob> errorInfo;
     HRESULT result = D3D12SerializeRootSignature(&rootDesc, D3D_ROOT_SIGNATURE_VERSION_1, &serializedRoot, &errorInfo);
-    DXThrowIfFail(result, "Failed to create root signature", errorInfo);
+    DXThrowIfFail(result, "Failed to serialize root signature", errorInfo);
 
     ComPtr<ID3D12RootSignature> rootSignature;  
     DXThrowIfFail(device->CreateRootSignature(0, serializedRoot->GetBufferPointer(), serializedRoot->GetBufferSize(), IID_PPV_ARGS(&rootSignature)));
@@ -303,10 +303,10 @@ ComPtr<ID3DBlob> CompileHLSLShader(string filePath, string shaderType, string en
 
 ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<ID3D12RootSignature> rootSignature, ComPtr<ID3DBlob> vertexShader, ComPtr<ID3DBlob> fragShader)
 {
-    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = { };
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc = { 0 };
     pipelineDesc.pRootSignature = rootSignature.Get();
     pipelineDesc.VS = { reinterpret_cast<UINT8*>(vertexShader->GetBufferPointer()), vertexShader->GetBufferSize() };
-    pipelineDesc.PS = { reinterpret_cast<UINT8*>(fragShader->GetBufferPointer()), vertexShader->GetBufferSize() };
+    pipelineDesc.PS = { reinterpret_cast<UINT8*>(fragShader->GetBufferPointer()), fragShader->GetBufferSize() };
 
     //Setting Rasterizer and blend states
     CD3DX12_RASTERIZER_DESC rasterizeDesc(D3D12_DEFAULT);
@@ -316,14 +316,16 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     pipelineDesc.BlendState = blendDesc;
 
     //Setting render pipeline input
-    D3D12_INPUT_ELEMENT_DESC inPosEle = { };
-    inPosEle.SemanticName = "POSITION";
+    D3D12_INPUT_ELEMENT_DESC inPosEle = { 0 };
+    string test1 = "POSITION";
+    inPosEle.SemanticName = test1.c_str();
     inPosEle.SemanticIndex = 0;
     inPosEle.Format = DXGI_FORMAT_R32G32B32_FLOAT;
     inPosEle.InstanceDataStepRate = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 
-    D3D12_INPUT_ELEMENT_DESC inColEle = { };
-    inPosEle.SemanticName = "COLOR";
+    D3D12_INPUT_ELEMENT_DESC inColEle = { 0 };
+    string test2 = "COLOR";
+    inPosEle.SemanticName = test2.c_str();
     inPosEle.SemanticIndex = 0;
     inPosEle.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
     inPosEle.InstanceDataStepRate = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
@@ -339,15 +341,19 @@ ComPtr<ID3D12PipelineState> CreatePipeline(ComPtr<ID3D12Device> device, ComPtr<I
     //Other settings
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     pipelineDesc.NumRenderTargets = 1;
-    pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R16G16B16A16_FLOAT;
+    pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
     pipelineDesc.Flags = D3D12_PIPELINE_STATE_FLAG_TOOL_DEBUG;
 
     pipelineDesc.SampleMask = UINT_MAX; //<- what does this do?
     pipelineDesc.SampleDesc.Count = 1;
 
+    pipelineDesc.DepthStencilState.DepthEnable = FALSE;
+    pipelineDesc.DepthStencilState.StencilEnable = FALSE;
+
     //Creating pipeline
     ComPtr<ID3D12PipelineState> pipeline;
-    DXThrowIfFail(device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipeline)), "Failed to create pipeline");
+    /*DXThrowIfFail(*/device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipeline));//, "Failed to create pipeline");
+
 
     return pipeline;
 }
